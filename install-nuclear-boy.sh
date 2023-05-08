@@ -44,10 +44,6 @@ detect_os() {
     fi
   fi
 
-  if [ -z "$dist" ]; then
-    unknown_os
-  fi
-
   # remove whitespace from OS and dist name
   os="${os// /}"
   dist="${dist// /}"
@@ -244,8 +240,8 @@ install_geant4() {
   cd ${env_dir}
   # clone and version
   wget https://github.com/Geant4/geant4/archive/refs/tags/v11.1.1.tar.gz
-  tar -xzvf geant4-v11.1.1.tar.gz
-  cd geant4-v11.1.1
+  tar -xzvf v11.1.1.tar.gz
+  cd geant4-11.1.1
   mkdir -p build
   cd build
   # cmake, build and install
@@ -258,8 +254,8 @@ install_geant4() {
   make
   make install
   cd ${env_dir}
-  rm -rf "${env_dir}/geant4-v11.1.1"
-  rm -rf "${env_dir}/geant4-v11.1.1.tar.gz"
+  rm -rf "${env_dir}/geant4-11.1.1"
+  rm -rf "${env_dir}/v11.1.1.tar.gz"
   echo "Geant4 installed"
 }
 
@@ -270,7 +266,7 @@ install_dagmc() {
   # pre-setup check that the directory we need are in place
   cd ${env_dir}
   # clone and version
-  git clone https://github.com/svalinn/DAGMC.git dagmc-repo
+  git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
   git checkout develop
   mkdir build
@@ -286,7 +282,7 @@ install_dagmc() {
   make
   make install
   cd ${env_dir}
-  rm -rf "${env_dir}/dagmc-repo"
+  #rm -rf "${env_dir}/dagmc-repo"
   echo "DAGMC installed"
 }
 
@@ -391,6 +387,7 @@ main() {
   get_sudo_password
   setup_dependencies
   setup_python_env
+  #source $env_dir/bin/activate
   set_ld_library_path
   install_moab
   install_geant4
