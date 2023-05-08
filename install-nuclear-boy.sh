@@ -285,6 +285,7 @@ install_dagmc() {
     -DBUILD_GEANT4=ON \
     -DGeant4_CMAKE_CONFIG=$env_dir/lib/cmake/Geant4 \
     -DGEANT4_DIR=$env_dir \
+    -DBUILD_TALLY=ON \
     -DCMAKE_INSTALL_PREFIX=$env_dir
   make
   make install
@@ -306,7 +307,7 @@ install_openmc() {
   # cmake, build and install
   cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
     -DOPENMC_USE_DAGMC=ON \
-    -DAGMC=$env_dir
+    -DDAGMC_ROOT=$env_dir
 
   make
   make install
@@ -394,7 +395,7 @@ main() {
   get_sudo_password
   setup_dependencies
   setup_python_env
-  #source $env_dir/bin/activate
+  source $env_dir/bin/activate
   set_ld_library_path
   install_moab
   install_geant4
