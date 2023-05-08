@@ -207,17 +207,24 @@ install_moab() {
 }
 
 set_geant4_data_lib() {
-  read -p "Enter Geant4 data library path (or press enter for default '$env_name/G4data'): " geant4_data_lib
+  while true; do
+    read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4data'): " geant4_data_lib
 
-  if [ -z "$geant4_data_lib" ]; then
-    geant4_data_lib=$env_name/G4data
-    echo "Using default library path: $geant4_data_lib"
-  else
-    echo "Using custom library path: $geant4_data_lib"
-  fi
+    if [ -z "$geant4_data_lib" ]; then
+      geant4_data_lib=$env_dir/G4data
+      echo "Using default library path: $geant4_data_lib"
+      break
+    elif [ -d "$geant4_data_lib" ]; then
+      echo "Using custom library path: $geant4_data_lib"
+      break
+    else
+      echo "Error: Directory $geant4_data_lib does not exist."
+      echo "Please enter a valid directory."
+    fi
+  done
 }
 
-auto_install_geant4_data(){
+auto_install_geant4_data() {
   while true; do
     read -p "Install Geant4 data? (y/n): " auto_install_geant4_data
 
@@ -246,11 +253,11 @@ install_geant4() {
   cd build
   # cmake, build and install
   cmake ../ -DGEANT4_INSTALL_DATA=$install_geant4_data \
-            -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
-            -DGEANT4_USE_QT=ON \
-            -DGEANT4_USE_OPENGL_X11=OFF \
-            -DGEANT4_USE_SYSTEM_EXPAT=OFF \
-            -DCMAKE_INSTALL_PREFIX=$env_dir
+    -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
+    -DGEANT4_USE_QT=ON \
+    -DGEANT4_USE_OPENGL_X11=OFF \
+    -DGEANT4_USE_SYSTEM_EXPAT=OFF \
+    -DCMAKE_INSTALL_PREFIX=$env_dir
   make
   make install
   cd ${env_dir}
