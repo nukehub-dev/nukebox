@@ -1,0 +1,10 @@
+requests
+tabulate 
+jupyter 
+notebook 
+yt
+nose 
+matplotlib
+pandas
+openmc-plotter
+openmc_plot

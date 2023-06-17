@@ -120,6 +120,7 @@ apt_package_list="software-properties-common \
                   git \
                   cmake \
                   gfortran \
+                  qtbase5-dev \
                   libblas-dev \
                   liblapack-dev \
                   libeigen3-dev \
@@ -395,7 +396,7 @@ main() {
   get_sudo_password
   setup_dependencies
   setup_python_env
-  source $env_dir/bin/activate
+  #source $env_dir/bin/activate
   set_ld_library_path
   install_moab
   install_geant4
