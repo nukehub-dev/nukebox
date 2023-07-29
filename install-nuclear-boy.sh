@@ -291,7 +291,7 @@ install_dagmc() {
   make
   make install
   cd ${env_dir}
-  #rm -rf "${env_dir}/dagmc-repo"
+  rm -rf "${env_dir}/dagmc-repo"
   echo "DAGMC installed"
 }
 
