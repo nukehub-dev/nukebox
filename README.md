@@ -18,14 +18,14 @@ The NuclearBoy installer script automates the installation process for [PyNE][py
 2. Make the script executable.
 
    ```sh
-   cd nuclear-boy-installer
-   chmod +x nuclear_boy_installer.sh
+   cd NuclearBoy
+   chmod +x install-nuclear-boy.sh
    ```
 
 3. Run the script.
 
    ```sh
-   ./nuclear_boy_installer.sh
+   ./install-nuclear-boy.sh.sh
    ```
 
 The script will guide you through the installation process and prompt you for necessary configuration options.
