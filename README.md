@@ -25,7 +25,7 @@ The NuclearBoy installer script automates the installation process for [PyNE][py
 3. Run the script.
 
    ```sh
-   ./install-nuclear-boy.sh.sh
+   ./install-nuclear-boy.sh
    ```
 
 The script will guide you through the installation process and prompt you for necessary configuration options.
