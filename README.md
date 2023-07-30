@@ -98,13 +98,13 @@ During the installation process, you'll be asked for the following configuration
    The script creates an executable program file (shell script) in the specified installation directory with the given environment name.
 
 10. **Create Shortcut:**
-    The script creates a symbolic link to the program file in the `/usr/bin/` directory, allowing users to run the Nuclear Boy environment from any location by simply typing the specified environment name in the terminal.
+    The script creates a symbolic link to the program file in the `/usr/bin/` directory, allowing users to run the NuclearBoy environment from any location by simply typing the specified environment name in the terminal.
 
 ## Activation and Usage
 
 Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuclear-boy`). This program file allows you to activate the virtual environment and set the necessary environment variables for the installed software.
 
-To activate the Nuclear Boy environment in your terminal, run:
+To activate the NuclearBoy environment in your terminal, run:
 
 ```sh
 source nuclear-boy
@@ -135,7 +135,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-The Nuclear Boy installer script is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
+The NuclearBoy installer script is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
 
 ## Contributing
 
