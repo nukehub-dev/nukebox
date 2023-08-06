@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
     # some systems dont have lsb-release yet have the lsb_release binary and
@@ -18,7 +20,7 @@ detect_os() {
           dist=${DISTRIB_RELEASE}
         fi
       fi
-
+atc
     elif [ $(which lsb_release 2>/dev/null) ]; then
       dist=$(lsb_release -c | cut -f2)
       os=$(lsb_release -i | cut -f2 | awk '{ print tolower($1) }')
