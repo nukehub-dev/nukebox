@@ -279,7 +279,7 @@ install_dagmc() {
   git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
   git checkout develop
-  mkdir build
+  mkdir -p build
   cd build
   # cmake, build and install
   cmake ../ -DMOAB_CMAKE_CONFIG=$env_dir/lib/cmake/MOAB \
@@ -305,7 +305,7 @@ install_openmc() {
   git clone https://github.com/openmc-dev/openmc.git openmc-repo
   cd openmc-repo
   git checkout develop
-  mkdir bld
+  mkdir -p bld
   cd bld
   # cmake, build and install
   cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
