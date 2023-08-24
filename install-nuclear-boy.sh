@@ -135,7 +135,7 @@ apt_package_list="software-properties-common \
 
 # list of python package
 pip_package_list="numpy \
-                  cython \
+                  cython<3 \
                   setuptools \
                   jinja2 \
                   progress \
@@ -151,10 +151,9 @@ setup_dependencies() {
     echo "Unfortunately, your operating system does not support apt-get."
     exit 1
   fi
-  sudo apt-get -y update
-  sudo apt-get -y install ${apt_package_list}
+  sudo apt-get update
+  sudo apt-get install ${apt_package_list} -y
   echo "Dependencies installed"
-  sleep 2
 }
 
 setup_python_env() {
