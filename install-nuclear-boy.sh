@@ -102,8 +102,15 @@ set_env_name() {
 }
 
 get_sudo_password() {
+  # Check if the user is already root
+  if [ "$(id -u)" -eq 0 ]; then
+    echo "User is already root. No need for sudo password."
+    return
+  fi
+  
   # Ask for the administrator password upfront
   sudo -v
+
   # Keep-alive: update existing sudo time stamp until the script has finished
   while true; do
     sudo -n true
