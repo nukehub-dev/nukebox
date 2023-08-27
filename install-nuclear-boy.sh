@@ -331,18 +331,18 @@ download_cross_section_data() {
     echo "Downloading ENDF/B-VII.0"
     wget https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz
     echo "Extracting ENDF/B-VII.0"
-    tar -Jxvf t25g7g6v0emygu50lr2ych1cf6o7454b.xz
-    rm t25g7g6v0emygu50lr2ych1cf6o7454b.xz
+    tar -Jxvf mcnp_endfb70.tar.xz
+    rm mcnp_endfb70.tar.xz
     echo "Downloading ENDF/B-VII.1"
     wget https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz
     echo "Extracting ENDF/B-VII.1"
-    tar -Jxvf d359skd2w6wrm86om2997a1bxgigc8pu.xz
-    rm d359skd2w6wrm86om2997a1bxgigc8pu.xz
+    tar -Jxvf mcnp_endfb71.tar.xz
+    rm mcnp_endfb71.tar.xz
     echo "Downloading ENDF/B-VIII.0"
     wget https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
     echo "Extracting ENDF/B-VIII.0"
-    tar -Jxvf nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
-    rm nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
+    tar -Jxvf lib80x.tar.xz
+    rm lib80x.tar.xz
     echo "Download Cross Section data complete"
   fi
 }
@@ -404,8 +404,11 @@ if [ -z $LD_LIBRARY_PATH ]; then
 else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:$LD_LIBRARY_PATH"
 fi
+nuclear-boy(){
 
-source ${env_dir}/bin/activate
+
+}
+
 
 EOF
   chmod +x ${env_dir}/${env_name}
