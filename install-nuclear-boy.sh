@@ -152,7 +152,7 @@ setup_dependencies() {
     exit 1
   fi
   sudo apt-get update
-  sudo apt-get install ${apt_package_list} -y
+  sudo apt-get install ${apt_package_list} -y --fix-missing
   echo "Dependencies installed"
 }
 
@@ -443,11 +443,6 @@ if [ -z $LD_LIBRARY_PATH ]; then
 else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:$LD_LIBRARY_PATH"
 fi
-nuclear-boy(){
-
-
-}
-
 
 EOF
   chmod +x ${env_dir}/${env_name}
