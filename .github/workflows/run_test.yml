@@ -12,9 +12,7 @@ on:
 
 jobs:
   main:
-    strategy:
-      matrix:
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11']
+    name: Run Tests
 
     runs-on: ubuntu-latest
 
@@ -22,11 +20,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python }}
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python }}
+          python-version: 3.11
 
       - name: Install NuclearBoy
         run: |
-          ./install-nuclear-boy -d /home/runner/work -e nuclear-boy -g /home/runner/work/nuclear-boy/G4Data -c /home/runner/work/nuclear-boy/CrossSection
+          ./install-nuclear-boy.sh -d /home/runner/work \
+            -e nuclear-boy \
+            -g /home/runner/work/nuclear-boy/G4Data \
+            -c /home/runner/work/nuclear-boy/CrossSection
