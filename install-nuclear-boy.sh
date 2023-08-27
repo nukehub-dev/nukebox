@@ -226,14 +226,14 @@ set_geant4_data_lib() {
   done
 }
 
-auto_install_geant4_data() {
+clarify_download_geant4_data() {
   while true; do
-    read -p "Install Geant4 data? (y/n): " auto_install_geant4_data
+    read -p "Download Geant4 data? (y/n): " download_geant4_data
 
-    if [ "$auto_install_geant4_data" == "y" ]; then
+    if [ "$download_geant4_data" == "y" ]; then
       install_geant4_data="ON"
       break
-    elif [ "$auto_install_geant4_data" == "n" ]; then
+    elif [ "$download_geant4_data" == "n" ]; then
       install_geant4_data="OFF"
       break
     else
@@ -294,6 +294,57 @@ install_dagmc() {
   cd ${env_dir}
   rm -rf "${env_dir}/dagmc-repo"
   echo "DAGMC installed"
+}
+
+set_cross_section_lib() {
+  while true; do
+    read -p "Enter Cross Section data library path (or press enter for default '$env_dir/CrossSectionData'): " cross_section_data_lib
+    if [ -z "$cross_section_data_lib" ]; then
+      cross_section_data_lib=$env_dir/CrossSectionData
+      echo "Using default library path: $cross_section_data_lib"
+      break
+    elif [ -d "$cross_section_data_lib" ]; then
+      echo "Using custom library path: $cross_section_data_lib"
+      break
+    else
+      echo "Error: Directory $cross_section_data_lib does not exist."
+      echo "Please enter a valid directory."
+    fi
+  done
+}
+
+clarify_download_cross_section_data() {
+  while true; do
+    read -p "Download Cross Section data? (y/n): " download_cross_section_data
+
+    if [ "$download_cross_section_data" == "y" || "$download_cross_section_data" == "n" ]; then
+      break
+    else
+      echo "Error: Invalid input."
+    fi
+  done
+}
+
+download_cross_section_data() {
+  if [ "$download_cross_section_data" == "y" ]; then
+    cd ${cross_section_data_lib}
+    echo "Downloading ENDF/B-VII.0"
+    wget https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz
+    echo "Extracting ENDF/B-VII.0"
+    tar -Jxvf t25g7g6v0emygu50lr2ych1cf6o7454b.xz
+    rm t25g7g6v0emygu50lr2ych1cf6o7454b.xz
+    echo "Downloading ENDF/B-VII.1"
+    wget https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz
+    echo "Extracting ENDF/B-VII.1"
+    tar -Jxvf d359skd2w6wrm86om2997a1bxgigc8pu.xz
+    rm d359skd2w6wrm86om2997a1bxgigc8pu.xz
+    echo "Downloading ENDF/B-VIII.0"
+    wget https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
+    echo "Extracting ENDF/B-VIII.0"
+    tar -Jxvf nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
+    rm nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
+    echo "Download Cross Section data complete"
+  fi
 }
 
 install_openmc() {
@@ -393,7 +444,9 @@ main() {
   set_install_directory
   set_env_name
   set_geant4_data_lib
-  auto_install_geant4_data
+  clarify_download_geant4_data
+  set_cross_section_lib
+  clarify_download_cross_section_data
   get_sudo_password
   setup_dependencies
   setup_python_env
@@ -403,6 +456,7 @@ main() {
   install_geant4
   install_dagmc
   install_openmc
+  download_cross_section_data
   install_pyne
   create_program_file
   create_shortcut
