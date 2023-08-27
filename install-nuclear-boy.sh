@@ -521,7 +521,6 @@ EOF
   echo "Please restart your shell for changes to take effect."
 }
 
-
 main() {
   detect_os
   detect_version_id
@@ -548,9 +547,9 @@ main() {
   create_program_file
   add_to_shell
   echo "==============================================="
-  echo "Nuclear Boy installation finished"
-  echo "To activate Nuclear Boy in your terminal type:"
-  echo "source ${env_name}"
+  echo "NuclearBoy installation finished"
+  echo "To activate NuclearBoy in your terminal type:"
+  echo "${env_name} activate"
   echo "Recommended packages can be installed through:"
   echo "pip3 install -r packages.txt --default-timeout=0"
   echo "================================================"
