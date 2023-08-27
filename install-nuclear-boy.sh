@@ -328,22 +328,61 @@ clarify_download_cross_section_data() {
 download_cross_section_data() {
   if [ "$download_cross_section_data" == "y" ]; then
     cd ${cross_section_data_lib}
-    echo "Downloading ENDF/B-VII.0"
-    wget https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz
-    echo "Extracting ENDF/B-VII.0"
-    tar -Jxvf mcnp_endfb70.tar.xz
-    rm mcnp_endfb70.tar.xz
-    echo "Downloading ENDF/B-VII.1"
-    wget https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz
-    echo "Extracting ENDF/B-VII.1"
-    tar -Jxvf mcnp_endfb71.tar.xz
-    rm mcnp_endfb71.tar.xz
-    echo "Downloading ENDF/B-VIII.0"
-    wget https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz
-    echo "Extracting ENDF/B-VIII.0"
-    tar -Jxvf lib80x.tar.xz
-    rm lib80x.tar.xz
-    echo "Download Cross Section data complete"
+    
+    # Function to download and extract data
+    download_and_extract() {
+      local url=$1
+      local filename=$2
+      wget $url
+      tar -Jxvf $filename
+      rm $filename
+    }
+    
+    # Check if files and extracted folders exist
+    if [ -f "mcnp_endfb70.tar.xz" ] || [ ! -d "mcnp_endfb70" ]; then
+      read -t 10 -p "File mcnp_endfb70.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
+      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+        echo "Downloading ENDF/B-VII.0"
+        download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
+        echo "Download and extraction of mcnp_endfb70.tar.xz complete"
+      else
+        echo "Skipping download and extraction of mcnp_endfb70.tar.xz."
+      fi
+    else
+        echo "Downloading ENDF/B-VII.0"
+        download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
+        echo "Download and extraction of mcnp_endfb70.tar.xz complete"
+    fi
+    
+    if [ -f "mcnp_endfb71.tar.xz" ] || [ ! -d "mcnp_endfb71" ]; then
+      read -t 10 -p "File mcnp_endfb71.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
+      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+        echo "Downloading ENDF/B-VII.1"
+        download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
+        echo "Download and extraction of mcnp_endfb71.tar.xz complete"
+      else
+        echo "Skipping download and extraction of mcnp_endfb71.tar.xz."
+      fi
+    else
+        echo "Downloading ENDF/B-VII.1"
+        download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
+        echo "Download and extraction of mcnp_endfb71.tar.xz complete"
+    fi
+    
+    if [ -f "lib80x.tar.xz" ] || [ ! -d "lib80x" ]; then
+      read -t 10 -p "File lib80x.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
+      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+        echo "Downloading ENDF/B-VIII.0"
+        download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
+        echo "Download and extraction of lib80x.tar.xz complete"
+      else
+        echo "Skipping download and extraction of lib80x.tar.xz."
+      fi
+    else
+        echo "Downloading ENDF/B-VIII.0"
+        download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
+        echo "Download and extraction of lib80x.tar.xz complete"
+    fi
   fi
 }
 
