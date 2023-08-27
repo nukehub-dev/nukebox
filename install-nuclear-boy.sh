@@ -483,34 +483,44 @@ EOF
   chmod +x ${env_dir}/${env_name}
   echo "${env_name} created."
 }
+
 add_to_shell() {
   echo "Adding ${env_name} to your shell."
-  if [ -f ~/.bashrc ]; then
-  cat >> ~/.bashrc <<EOF
+  
+  # Backup shell configuration files
+  backup_dir="$HOME/.shell_config_backup"
+  mkdir -p "$backup_dir"
+  
+  backup_and_append() {
+    config_file="$1"
+    if [ -f "$config_file" ]; then
+      # Backup the original file
+      backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
+      cp "$config_file" "$backup_file"
+      
+      # Append to the config file if not already present
+      if ! grep -q "${env_dir}/${env_name}" "$config_file"; then
+        echo "Adding to $config_file"
+        cat >> "$config_file" <<EOF
 if [ -f "${env_dir}/${env_name}" ]; then
   source ${env_dir}/${env_name}
 fi
 
 EOF
-  fi
-  if [ -f ~/.zshrc ]; then
-  cat >> ~/.zshrc <<EOF
-if [ -f "${env_dir}/${env_name}" ]; then
-  source ${env_dir}/${env_name}
-fi
-
-EOF
-  fi
-  if [ -f ~/.config/fish/config.fish ]; then
-  cat >> ~/.config/fish/config.fish <<EOF
-if [ -f "${env_dir}/${env_name}" ]; then
-  source ${env_dir}/${env_name}
-fi
-
-EOF
-  fi
+      fi
+    fi
+  }
+  
+  # Backup and append to different shell configuration files
+  backup_and_append "$HOME/.bashrc"
+  backup_and_append "$HOME/.zshrc"
+  backup_and_append "$HOME/.config/fish/config.fish"
+  
   echo "${env_name} added to your shell."
+  echo "Backup files have been saved to ${backup_dir}"
+  echo "Please restart your shell for changes to take effect."
 }
+
 
 main() {
   detect_os
