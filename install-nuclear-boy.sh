@@ -68,33 +68,69 @@ detect_version_id() {
   echo "Detected version id as $version_id"
 }
 
-set_install_directory() {
-  working_dir="$(cd -P "$(dirname -- "${BASH_SOURCE}")" >/dev/null 2>&1 && pwd)"
-  while true; do
-    echo "Please enter the installation directory path:"
-    echo "(Press enter for current directory: $working_dir)"
-    read -p "Directory path: " install_dir
+# Parse command-line arguments
+while getopts ":d:e:g:c:" opt; do
+  case $opt in
+  d)
+    install_dir="$OPTARG"
+    ;;
+  e)
+    env_name="$OPTARG"
+    ;;
+  g)
+    geant4_data_lib="$OPTARG"
+    ;;
+  c)
+    cross_section_data_lib="$OPTARG"
+    ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    exit 1
+    ;;
+  :)
+    echo "Option -$OPTARG requires an argument." >&2
+    exit 1
+    ;;
+  esac
+done
 
-    if [ -z "$install_dir" ]; then
-      install_dir=$working_dir
-      echo "Installing application in current directory: $install_dir"
-      break
-    elif [ -d "$install_dir" ]; then
-      echo "Installing application in directory: $install_dir"
-      break
-    else
-      echo "Error: Directory $install_dir does not exist."
-      echo
-    fi
-  done
+set_install_directory() {
+  if [ -z "$install_dir" ]; then
+    working_dir="$(cd -P "$(dirname -- "${BASH_SOURCE}")" >/dev/null 2>&1 && pwd)"
+    while true; do
+      echo "Please enter the installation directory path:"
+      echo "(Press enter for current directory: $working_dir)"
+      read -p "Directory path: " install_dir
+
+      if [ -z "$install_dir" ]; then
+        install_dir=$working_dir
+        echo "Installing application in current directory: $install_dir"
+        break
+      elif [ -d "$install_dir" ]; then
+        echo "Installing application in directory: $install_dir"
+        break
+      else
+        echo "Error: Directory $install_dir does not exist."
+        echo
+      fi
+    done
+  elif [ -d "$install_dir" ]; then
+    echo "Installing application in directory: $install_dir"
+  else
+    mkdir $install_dir
+  fi
 }
 
 set_env_name() {
-  read -p "Enter environment name (or press enter for default 'nuclear-boy'): " env_name
-
   if [ -z "$env_name" ]; then
-    env_name="nuclear-boy"
-    echo "Using default environment name: $env_name"
+    read -p "Enter environment name (or press enter for default 'nuclear-boy'): " env_name
+
+    if [ -z "$env_name" ]; then
+      env_name="nuclear-boy"
+      echo "Using default environment name: $env_name"
+    else
+      echo "Using custom environment name: $env_name"
+    fi
   else
     echo "Using custom environment name: $env_name"
   fi
@@ -107,7 +143,7 @@ get_sudo_password() {
     echo "User is already root. No need for sudo password."
     return
   fi
-  
+
   # Ask for the administrator password upfront
   sudo -v
 
@@ -216,30 +252,36 @@ install_moab() {
 }
 
 set_geant4_data_lib() {
-  while true; do
-    read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4data'): " geant4_data_lib
+  if [ -z "$geant4_data_lib" ]; then
+    while true; do
+      read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4data'): " geant4_data_lib
 
-    if [ -z "$geant4_data_lib" ]; then
-      geant4_data_lib=$env_dir/G4data
-      echo "Using default library path: $geant4_data_lib"
-      break
-    elif [ -d "$geant4_data_lib" ]; then
-      echo "Using custom library path: $geant4_data_lib"
-      break
-    else
-      echo "Error: Directory $geant4_data_lib does not exist."
-      echo "Please enter a valid directory."
-    fi
-  done
+      if [ -z "$geant4_data_lib" ]; then
+        geant4_data_lib=$env_dir/G4data
+        echo "Using default library path: $geant4_data_lib"
+        break
+      elif [ -d "$geant4_data_lib" ]; then
+        echo "Using custom library path: $geant4_data_lib"
+        break
+      else
+        echo "Error: Directory $geant4_data_lib does not exist."
+        echo "Please enter a valid directory."
+      fi
+    done
+  elif [ -d "$geant4_data_lib" ]; then
+    echo "Using custom Geant4 data library path: $geant4_data_lib"
+  else
+    mkdir $geant4_data_lib
+  fi
 }
 
 clarify_download_geant4_data() {
   while true; do
     read -t 10 -p "Download Geant4 data? (default: y 10s) (y/n): " download_geant4_data
-    if [ "$download_geant4_data" == "y" || -z "$download_geant4_data"]; then
+    if [ "$download_geant4_data" == "y" ] || [ -z "$download_geant4_data" ]; then
       install_geant4_data="ON"
       break
-    elif [ "$download_geant4_data" == "n"]; then
+    elif [ "$download_geant4_data" == "n" ]; then
       install_geant4_data="OFF"
       break
     else
@@ -303,20 +345,26 @@ install_dagmc() {
 }
 
 set_cross_section_lib() {
-  while true; do
-    read -p "Enter Cross Section data library path (or press enter for default '$env_dir/CrossSectionData'): " cross_section_data_lib
-    if [ -z "$cross_section_data_lib" ]; then
-      cross_section_data_lib=$env_dir/CrossSectionData
-      echo "Using default library path: $cross_section_data_lib"
-      break
-    elif [ -d "$cross_section_data_lib" ]; then
-      echo "Using custom library path: $cross_section_data_lib"
-      break
-    else
-      echo "Error: Directory $cross_section_data_lib does not exist."
-      echo "Please enter a valid directory."
-    fi
-  done
+  if [ -z "$cross_section_data_lib" ]; then
+    while true; do
+      read -p "Enter Cross Section data library path (or press enter for default '$env_dir/CrossSectionData'): " cross_section_data_lib
+      if [ -z "$cross_section_data_lib" ]; then
+        cross_section_data_lib=$env_dir/CrossSectionData
+        echo "Using default library path: $cross_section_data_lib"
+        break
+      elif [ -d "$cross_section_data_lib" ]; then
+        echo "Using custom library path: $cross_section_data_lib"
+        break
+      else
+        echo "Error: Directory $cross_section_data_lib does not exist."
+        echo "Please enter a valid directory."
+      fi
+    done
+  elif [ -d "$cross_section_data_lib" ]; then
+    echo "Using custom Cross Section data library path: $cross_section_data_lib"
+  else
+    mkdir $cross_section_data_lib
+  fi
 }
 
 clarify_download_cross_section_data() {
@@ -325,7 +373,7 @@ clarify_download_cross_section_data() {
     if [ -z "$download_cross_section_data" ]; then
       $download_cross_section_data="y"
       break
-    elif [ "$download_cross_section_data" == "y" || "$download_cross_section_data" == "n" ]; then
+    elif [ "$download_cross_section_data" == "y" ] || [ "$download_cross_section_data" == "n" ]; then
       break
     else
       echo "Error: Invalid input."
@@ -335,6 +383,7 @@ clarify_download_cross_section_data() {
 
 download_cross_section_data() {
   if [ "$download_cross_section_data" == "y" ]; then
+    mkdir -p ${cross_section_data_lib}
     cd ${cross_section_data_lib}
     # Function to download and extract data
     download_and_extract() {
@@ -493,22 +542,22 @@ EOF
 
 add_to_shell() {
   echo "Adding ${env_name} to your shell."
-  
+
   # Backup shell configuration files
   backup_dir="$HOME/.shell_config_backup"
   mkdir -p "$backup_dir"
-  
+
   backup_and_append() {
     config_file="$1"
     if [ -f "$config_file" ]; then
       # Backup the original file
       backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
       cp "$config_file" "$backup_file"
-      
+
       # Append to the config file if not already present
       if ! grep -q "${env_dir}/${env_name}" "$config_file"; then
         echo "Adding to $config_file"
-        cat >> "$config_file" <<EOF
+        cat >>"$config_file" <<EOF
 if [ -f "${env_dir}/${env_name}" ]; then
   source ${env_dir}/${env_name}
 fi
@@ -517,12 +566,12 @@ EOF
       fi
     fi
   }
-  
+
   # Backup and append to different shell configuration files
   backup_and_append "$HOME/.bashrc"
   backup_and_append "$HOME/.zshrc"
   backup_and_append "$HOME/.config/fish/config.fish"
-  
+
   echo "${env_name} added to your shell."
   echo "Backup files have been saved to ${backup_dir}"
   echo "Please restart your shell for changes to take effect."
