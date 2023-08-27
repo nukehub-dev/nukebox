@@ -444,32 +444,72 @@ else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:$LD_LIBRARY_PATH"
 fi
 
+export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x"
+
+__${env_name}_activate(){
+  source ${env_dir}/bin/activate 
+}
+
+__${env_name}_deactivate(){
+  deactivate
+}
+
+__${env_name}_set_cross_sections_path() {
+  if [ -n "$OPENMC_CROSS_SECTIONS" ]; then
+      unset OPENMC_CROSS_SECTIONS
+  fi
+  local cmd=$1
+  case $cmd in
+  endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70" ;;
+  endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71" ;;
+  lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x" ;;
+  help) echo "Usage: ${env_name} [activate|deactivate|endf [endfb70|endfb71|lib80x]]" ;;
+  *) echo "Error: Invalid input.";
+  esac
+}
+
+${env_name}() {
+  local comd=$1
+  case $comd in
+  activate) __${env_name}_activate ;;
+  deactivate) __${env_name}_deactivate ;;
+  endf) __${env_name}_set_cross_sections_path $2 ;;
+  help) echo "Usage: ${env_name} [activate|deactivate|endf [endfb70|endfb71|lib80x]]" ;;
+  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
+  esac
+}
+
 EOF
   chmod +x ${env_dir}/${env_name}
   echo "${env_name} created."
 }
+add_to_shell() {
+  echo "Adding ${env_name} to your shell."
+  if [ -f ~/.bashrc ]; then
+  cat >> ~/.bashrc <<EOF
+if [ -f "${env_dir}/${env_name}" ]; then
+  source ${env_dir}/${env_name}
+fi
 
-create_shortcut() {
-  if [ -f "/usr/bin/${env_name}" ]; then
-    echo "Shortcut already exists!"
-    read -p "Are you sure you want to delete ${env_name}? (y/n) " choice
-    case "$choice" in
-    y | Y)
-      sudo rm -rf "/usr/bin/${env_name}"
-      sudo ln -s ${env_dir}/${env_name} /usr/bin/${env_name}
-      echo "New shortcut created."
-      ;;
-    n | N)
-      echo "Deletion cancelled."
-      ;;
-    *)
-      echo "Invalid choice. Deletion cancelled."
-      ;;
-    esac
-  else
-    sudo ln -s ${env_dir}/${env_name} /usr/bin/${env_name}
-    echo "Shortcut created."
+EOF
   fi
+  if [ -f ~/.zshrc ]; then
+  cat >> ~/.zshrc <<EOF
+if [ -f "${env_dir}/${env_name}" ]; then
+  source ${env_dir}/${env_name}
+fi
+
+EOF
+  fi
+  if [ -f ~/.config/fish/config.fish ]; then
+  cat >> ~/.config/fish/config.fish <<EOF
+if [ -f "${env_dir}/${env_name}" ]; then
+  source ${env_dir}/${env_name}
+fi
+
+EOF
+  fi
+  echo "${env_name} added to your shell."
 }
 
 main() {
@@ -496,7 +536,7 @@ main() {
   download_cross_section_data
   install_pyne
   create_program_file
-  create_shortcut
+  add_to_shell
   echo "==============================================="
   echo "Nuclear Boy installation finished"
   echo "To activate Nuclear Boy in your terminal type:"
