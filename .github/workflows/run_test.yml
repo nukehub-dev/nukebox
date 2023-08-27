@@ -12,8 +12,6 @@ on:
 
 jobs:
   main:
-    name: Run Tests
-
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +25,7 @@ jobs:
 
       - name: Install NuclearBoy
         run: |
-          ./install-nuclear-boy.sh -d /home/runner/work \
+          ./install-nuclear-boy.sh -d ~/ \
             -e nuclear-boy \
-            -g /home/runner/work/nuclear-boy/G4Data \
-            -c /home/runner/work/nuclear-boy/CrossSection
+            -g ~/nuclear-boy/G4Data \
+            -c ~/nuclear-boy/CrossSection
