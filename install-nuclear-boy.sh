@@ -228,12 +228,11 @@ set_geant4_data_lib() {
 
 clarify_download_geant4_data() {
   while true; do
-    read -p "Download Geant4 data? (y/n): " download_geant4_data
-
-    if [ "$download_geant4_data" == "y" ]; then
+    read -t 10 -p "Download Geant4 data? (default: y 10s) (y/n): " download_geant4_data
+    if [ "$download_geant4_data" == "y" || -z "$download_geant4_data"]; then
       install_geant4_data="ON"
       break
-    elif [ "$download_geant4_data" == "n" ]; then
+    elif [ "$download_geant4_data" == "n"]; then
       install_geant4_data="OFF"
       break
     else
@@ -315,9 +314,11 @@ set_cross_section_lib() {
 
 clarify_download_cross_section_data() {
   while true; do
-    read -p "Download Cross Section data? (y/n): " download_cross_section_data
-
-    if [ "$download_cross_section_data" == "y" || "$download_cross_section_data" == "n" ]; then
+    read -t 10 -p "Download Cross Section data? (default: y 10s) (y/n): " download_cross_section_data
+    if [ -z "$download_cross_section_data" ]; then
+      $download_cross_section_data="y"
+      break
+    elif [ "$download_cross_section_data" == "y" || "$download_cross_section_data" == "n" ]; then
       break
     else
       echo "Error: Invalid input."
@@ -328,7 +329,6 @@ clarify_download_cross_section_data() {
 download_cross_section_data() {
   if [ "$download_cross_section_data" == "y" ]; then
     cd ${cross_section_data_lib}
-    
     # Function to download and extract data
     download_and_extract() {
       local url=$1
@@ -337,11 +337,11 @@ download_cross_section_data() {
       tar -Jxvf $filename
       rm $filename
     }
-    
+
     # Check if files and extracted folders exist
     if [ -f "mcnp_endfb70.tar.xz" ] || [ ! -d "mcnp_endfb70" ]; then
-      read -t 10 -p "File mcnp_endfb70.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
-      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+      read -t 10 -p "File mcnp_endfb70.tar.xz already exists. Do you want to download and extract it again? (default: y 10s) (y/n): " choice_mcnp_endfb70
+      if [ "$choice_mcnp_endfb70" == "y" ] || [ -z "$choice_mcnp_endfb70" ]; then
         echo "Downloading ENDF/B-VII.0"
         download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
         echo "Download and extraction of mcnp_endfb70.tar.xz complete"
@@ -349,14 +349,14 @@ download_cross_section_data() {
         echo "Skipping download and extraction of mcnp_endfb70.tar.xz."
       fi
     else
-        echo "Downloading ENDF/B-VII.0"
-        download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
-        echo "Download and extraction of mcnp_endfb70.tar.xz complete"
+      echo "Downloading ENDF/B-VII.0"
+      download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
+      echo "Download and extraction of mcnp_endfb70.tar.xz complete"
     fi
-    
+
     if [ -f "mcnp_endfb71.tar.xz" ] || [ ! -d "mcnp_endfb71" ]; then
-      read -t 10 -p "File mcnp_endfb71.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
-      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+      read -t 10 -p "File mcnp_endfb71.tar.xz already exists. Do you want to download and extract it again? (default: y 10s) (y/n): " choice_mcnp_endfb71
+      if [ "$choice_mcnp_endfb71" == "y" ] || [ -z "$choice_mcnp_endfb71" ]; then
         echo "Downloading ENDF/B-VII.1"
         download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
         echo "Download and extraction of mcnp_endfb71.tar.xz complete"
@@ -364,14 +364,14 @@ download_cross_section_data() {
         echo "Skipping download and extraction of mcnp_endfb71.tar.xz."
       fi
     else
-        echo "Downloading ENDF/B-VII.1"
-        download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
-        echo "Download and extraction of mcnp_endfb71.tar.xz complete"
+      echo "Downloading ENDF/B-VII.1"
+      download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
+      echo "Download and extraction of mcnp_endfb71.tar.xz complete"
     fi
-    
+
     if [ -f "lib80x.tar.xz" ] || [ ! -d "lib80x" ]; then
-      read -t 10 -p "File lib80x.tar.xz already exists. Do you want to download and extract it again? (y/n): " choice
-      if [ "$choice" == "y" ] || [ -z "$choice" ]; then
+      read -t 10 -p "File lib80x.tar.xz already exists. Do you want to download and extract it again? (default: y 10s) (y/n): " choice_lib80x
+      if [ "$choice_lib80x" == "y" ] || [ -z "$choice_lib80x" ]; then
         echo "Downloading ENDF/B-VIII.0"
         download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
         echo "Download and extraction of lib80x.tar.xz complete"
@@ -379,9 +379,9 @@ download_cross_section_data() {
         echo "Skipping download and extraction of lib80x.tar.xz."
       fi
     else
-        echo "Downloading ENDF/B-VIII.0"
-        download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
-        echo "Download and extraction of lib80x.tar.xz complete"
+      echo "Downloading ENDF/B-VIII.0"
+      download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
+      echo "Download and extraction of lib80x.tar.xz complete"
     fi
   fi
 }
