@@ -277,15 +277,21 @@ set_geant4_data_lib() {
 
 clarify_download_geant4_data() {
   while true; do
-    read -t 10 -p "Download Geant4 data? (default: y 10s) (y/n): " download_geant4_data
-    if [ "$download_geant4_data" == "y" ] || [ -z "$download_geant4_data" ]; then
+    echo -n "Download Geant4 data? (default: y 10s) (y/n): 
+"
+    if read -t 10 download_geant4_data || [ $? -eq 142 ]; then
+      if [ -z "$download_geant4_data" ] || [ "$download_geant4_data" == "y" ]; then
+        install_geant4_data="ON"
+        break
+      elif [ "$download_geant4_data" == "n" ]; then
+        install_geant4_data="OFF"
+        break
+      else
+        echo "Error: Invalid input."
+      fi
+    else
       install_geant4_data="ON"
       break
-    elif [ "$download_geant4_data" == "n" ]; then
-      install_geant4_data="OFF"
-      break
-    else
-      echo "Error: Invalid input."
     fi
   done
 }
@@ -369,14 +375,21 @@ set_cross_section_lib() {
 
 clarify_download_cross_section_data() {
   while true; do
-    read -t 10 -p "Download Cross Section data? (default: y 10s) (y/n): " download_cross_section_data
-    if [ -z "$download_cross_section_data" ]; then
-      $download_cross_section_data="y"
-      break
-    elif [ "$download_cross_section_data" == "y" ] || [ "$download_cross_section_data" == "n" ]; then
-      break
+    echo -n "Download Cross Section data? (default: y 10s) (y/n): 
+"
+    if read -t 10 download_cross_section_data || [ $? -eq 142 ]; then
+      if [ -z "$download_cross_section_data" ]; then
+        download_cross_section_data="y"
+        break
+      elif [ "$download_cross_section_data" == "y" ] || [ "$download_cross_section_data" == "n" ]; then
+        break
+      else
+        echo "Error: Invalid input."
+      fi
     else
-      echo "Error: Invalid input."
+      download_cross_section_data="y"
+      echo "Will download Cross Section data."
+      break
     fi
   done
 }
