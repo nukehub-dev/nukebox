@@ -524,7 +524,7 @@ EOF
 main() {
   detect_os
   detect_version_id
-  echo "Welcome to the Nuclear Boy installer!"
+  echo "Welcome to the NuclearBoy installer!"
   echo "This script will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
   echo
   set_install_directory
