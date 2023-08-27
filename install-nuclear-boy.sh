@@ -117,7 +117,7 @@ set_install_directory() {
   elif [ -d "$install_dir" ]; then
     echo "Installing application in directory: $install_dir"
   else
-    mkdir $install_dir
+    mkdir -p $install_dir
   fi
 }
 
@@ -271,7 +271,7 @@ set_geant4_data_lib() {
   elif [ -d "$geant4_data_lib" ]; then
     echo "Using custom Geant4 data library path: $geant4_data_lib"
   else
-    mkdir $geant4_data_lib
+    mkdir -p $geant4_data_lib
   fi
 }
 
@@ -369,7 +369,7 @@ set_cross_section_lib() {
   elif [ -d "$cross_section_data_lib" ]; then
     echo "Using custom Cross Section data library path: $cross_section_data_lib"
   else
-    mkdir $cross_section_data_lib
+    mkdir -p $cross_section_data_lib
   fi
 }
 
