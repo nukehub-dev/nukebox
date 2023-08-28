@@ -401,65 +401,68 @@ download_cross_section_data() {
     # Function to download and extract data
     download_and_extract() {
       local url=$1
-      local filename=$2
+      local filename=$(basename $url)
+      mkdir -p tmp
+      cd tmp
       wget $url
-      tar -Jxvf $filename
-      rm $filename
+      cd ..
+      tar -Jxvf tmp/$filename
+      rm -rf tmp
     }
 
     # Check if files and extracted folders exist
-    if [ -f "mcnp_endfb70.tar.xz" ] || [ -d "mcnp_endfb70" ]; then
+    if [ -d "mcnp_endfb70" ]; then
       echo -n "ENDF/B-VII.0 already exists. Do you want to download and extract it again? (default: y 10s) (y/n):
 "
       if read -t 10 choice_mcnp_endfb70 || [ $? -eq 142 ]; then
         if [ "$choice_mcnp_endfb70" == "y" ] || [ -z "$choice_mcnp_endfb70" ]; then
           echo "Downloading ENDF/B-VII.0"
-          download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
-          echo "Download and extraction of mcnp_endfb70.tar.xz complete"
+          download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz"
+          echo "Download and extraction of mcnp_endfb70 complete"
         else
-          echo "Skipping download and extraction of mcnp_endfb70.tar.xz."
+          echo "Skipping download and extraction of mcnp_endfb70."
         fi
       fi
 
     else
       echo "Downloading ENDF/B-VII.0"
-      download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz" "mcnp_endfb70.tar.xz"
-      echo "Download and extraction of mcnp_endfb70.tar.xz complete"
+      download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz"
+      echo "Download and extraction of mcnp_endfb70 complete"
     fi
-    if [ -f "mcnp_endfb71.tar.xz" ] || [ -d "mcnp_endfb71" ]; then
+    if [ -d "mcnp_endfb71" ]; then
       echo -n "ENDF/B-VII.1 already exists. Do you want to download and extract it again? (default: y 10s) (y/n):
 "
       if read -t 10 choice_mcnp_endfb71 || [ $? -eq 142 ]; then
         if [ "$choice_mcnp_endfb71" == "y" ] || [ -z "$choice_mcnp_endfb71" ]; then
           echo "Downloading ENDF/B-VII.1"
-          download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
-          echo "Download and extraction of mcnp_endfb71.tar.xz complete"
+          download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz"
+          echo "Download and extraction of mcnp_endfb71 complete"
         else
-          echo "Skipping download and extraction of mcnp_endfb71.tar.xz."
+          echo "Skipping download and extraction of mcnp_endfb71."
         fi
       fi
     else
       echo "Downloading ENDF/B-VII.1"
-      download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz" "mcnp_endfb71.tar.xz"
-      echo "Download and extraction of mcnp_endfb71.tar.xz complete"
+      download_and_extract "https://anl.box.com/shared/static/d359skd2w6wrm86om2997a1bxgigc8pu.xz"
+      echo "Download and extraction of mcnp_endfb71 complete"
     fi
 
-    if [ -f "lib80x.tar.xz" ] || [ -d "lib80x" ]; then
+    if [ -d "lib80x" ]; then
       echo -n "ENDF/B-VIII.0 already exists. Do you want to download and extract it again? (default: y 10s) (y/n):
 "
       if read -t 10 choice_lib80x || [ $? -eq 142 ]; then
         if [ "$choice_lib80x" == "y" ] || [ -z "$choice_lib80x" ]; then
           echo "Downloading ENDF/B-VIII.0"
-          download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
-          echo "Download and extraction of lib80x.tar.xz complete"
+          download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz"
+          echo "Download and extraction of lib80x complete"
         else
-          echo "Skipping download and extraction of lib80x.tar.xz."
+          echo "Skipping download and extraction of lib80x."
         fi
       fi
     else
       echo "Downloading ENDF/B-VIII.0"
-      download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz" "lib80x.tar.xz"
-      echo "Download and extraction of lib80x.tar.xz complete"
+      download_and_extract "https://anl.box.com/shared/static/nd7p4jherolkx4b1rfaw5uqp58nxtstr.xz"
+      echo "Download and extraction of lib80x complete"
     fi
   fi
 }
@@ -611,7 +614,6 @@ main() {
   clarify_download_geant4_data
   set_cross_section_lib
   clarify_download_cross_section_data
-  download_cross_section_data
   get_sudo_password
   setup_dependencies
   setup_python_env
