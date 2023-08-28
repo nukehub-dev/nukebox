@@ -4,13 +4,13 @@ on:
   # allows running workflows manually
   workflow_dispatch:
 
-  # push:
-  #   branches:
-  #     - develop
-  #   paths:
-  #     - '.github/workflows/main.workflow.yml'
-  #     - 'install-nuclear-boy.sh'
-  #     - 'tests/**'
+  push:
+    branches:
+      - develop
+    paths:
+      - '.github/workflows/run_build_and_test.yml'
+      - 'install-nuclear-boy.sh'
+      - 'tests/**'
 
 jobs:
   main:
