@@ -302,9 +302,13 @@ install_geant4() {
   echo "--------------------"
   cd ${env_dir}
   # clone and version
-  wget https://github.com/Geant4/geant4/archive/refs/tags/v11.1.1.tar.gz
-  tar -xzvf v11.1.1.tar.gz
-  cd geant4-11.1.1
+  wget https://github.com/Geant4/geant4/archive/refs/tags/v11.1.2.tar.gz
+  tar -xzvf v11.1.2.tar.gz
+  cd geant4-11.1.2
+
+  # Get Geant4 version
+  geant4_version='v11.1.2'
+  echo "$geant4_version" >${env_dir}/var/log/Geant4.version.txt
   mkdir -p build
   cd build
   # cmake, build and install
@@ -317,8 +321,8 @@ install_geant4() {
   make
   make install
   cd ${env_dir}
-  rm -rf "${env_dir}/geant4-11.1.1"
-  rm -rf "${env_dir}/v11.1.1.tar.gz"
+  rm -rf "${env_dir}/geant4-11.1.2"
+  rm -rf "${env_dir}/v11.1.2.tar.gz"
   echo "Geant4 installed"
 }
 
@@ -328,10 +332,13 @@ install_dagmc() {
   echo "-------------------"
   # pre-setup check that the directory we need are in place
   cd ${env_dir}
-  # clone and version
+  # clone the repository
   git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
-  git checkout develop
+
+  # Get the latest commit hash of the develop branch
+  dagmc_version=$(git rev-parse origin/develop)
+  echo "$dagmc_version" >${env_dir}/var/log/DAGMC.version.txt
   mkdir -p build
   cd build
   # cmake, build and install
@@ -475,6 +482,10 @@ install_openmc() {
   git clone https://github.com/openmc-dev/openmc.git openmc-repo
   cd openmc-repo
   git checkout develop
+
+  # Get the latest commit hash of the develop branch
+  openmc_version=$(git rev-parse origin/develop)
+  echo "$openmc_version" >${env_dir}/var/log/OpenMC.version.txt
   mkdir -p bld
   cd bld
   # cmake, build and install
@@ -500,6 +511,12 @@ install_pyne() {
   # clone and version
   git clone https://github.com/pyne/pyne.git pyne-repo
   cd pyne-repo
+
+  # Get the latest commit hash of the develop branch
+  pyne_version=$(git rev-parse origin/develop)
+  echo "$pyne_version" >${env_dir}/var/log/PyNE.version.txt
+
+  # Run setup
   python3 setup.py install --prefix ${env_dir} \
     --moab ${env_dir} \
     --dagmc ${env_dir} \
@@ -544,9 +561,341 @@ __${env_name}_set_cross_sections_path() {
   endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70" ;;
   endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71" ;;
   lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x" ;;
-  help) echo "Usage: ${env_name} [activate|deactivate|endf [endfb70|endfb71|lib80x]]" ;;
-  *) echo "Error: Invalid input.";
+  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
   esac
+}
+
+__${env_name}_update_geant4() {
+  echo "--------------------"
+  echo "Updating Geant4..."
+  echo "--------------------"
+
+  # Get the latest version tag from the Geant4 GitHub repository
+  geant4_latest_version=$(git ls-remote --tags https://github.com/Geant4/geant4.git | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+
+  # Read the previously stored version tag from the file
+  geant4_old_version=$(cat ${env_dir}/var/log/Geant4.version.txt)
+
+  # Compare the new and old version tags
+  if [ "$geant4_latest_version" == "$geant4_old_version" ]; then
+    echo "Geant4 is already up to date."
+  else
+    while true; do
+      echo "Update Geant4 from $geant4_old_version to $geant4_latest_version? (default: y 10s) (y/n):
+"
+
+      if read -t 10 update_geant4 || [ $? -eq 142 ]; then
+        # Get the current working directory
+        current_working_dir=$(pwd)
+
+        # Navigate to the existing Geant4 installation directory
+        cd ${env_dir}
+
+        # Make a new temporary directory
+        mkdir -p tmp
+        cd tmp
+
+        # Download and extract the latest Geant4 version
+        wget https://github.com/Geant4/geant4/archive/refs/tags/${geant4_latest_version}.tar.gz
+        tar -xzvf ${geant4_latest_version}.tar.gz
+        cd geant4-${geant4_latest_version}
+        mkdir -p build
+        cd build
+
+        # cmake, build, and install
+        cmake ../ -DGEANT4_INSTALL_DATA=$install_geant4_data \
+          -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
+          -DGEANT4_USE_QT=ON \
+          -DGEANT4_USE_OPENGL_X11=OFF \
+          -DGEANT4_USE_SYSTEM_EXPAT=OFF \
+          -DCMAKE_INSTALL_PREFIX=$env_dir
+
+        make
+        make install
+
+        echo "Geant4 has been updated to the latest version."
+
+        # Update the stored version tag
+        echo "$geant4_latest_version" >${env_dir}/var/log/Geant4.version.txt
+        cd $current_working_dir
+        break
+      elif [ "$update_geant4" == "n" ]; then
+        echo "Geant4 update cancelled."
+        break
+      else
+        echo "Error: Invalid input."
+      fi
+    done
+  fi
+}
+
+__${env_name}_update_openmc() {
+  echo "---------------------"
+  echo "Updating OpenMC..."
+  echo "---------------------"
+
+  # Get the latest commit hash of the develop branch
+  openmc_new_version=$(git ls-remote https://github.com/openmc-dev/openmc.git refs/heads/develop | awk '{print $1}')
+
+  # Read the previously stored commit hash from the file
+  openmc_old_version=$(cat ${env_dir}/var/log/OpenMC.version.txt)
+
+  # Compare the new and old commit hashes
+  if [ "$openmc_new_version" == "$openmc_old_version" ]; then
+    echo "OpenMC is already up to date."
+  else
+    while true; do
+      echo "Update OpenMC from $openmc_old_version to $openmc_new_version? (default: y 10s) (y/n):
+"
+
+      if read -t 10 update_openmc || [ $? -eq 142 ]; then
+        # Get the current working directory
+        current_working_dir=$(pwd)
+
+        # Navigate to the existing OpenMC installation directory
+        cd ${env_dir}
+
+        # Make a new temporary directory
+        mkdir -p tmp
+        cd tmp
+
+        # Remove the existing OpenMC repository if it exists
+        rm -rf openmc-repo
+
+        # Clone the latest version of the OpenMC repository
+        git clone https://github.com/openmc-dev/openmc.git openmc-repo
+        cd openmc-repo
+        git checkout develop
+
+        # Perform the update steps
+        mkdir -p bld
+        cd bld
+        cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
+          -DOPENMC_USE_DAGMC=ON \
+          -DDAGMC_ROOT=$env_dir
+
+        make
+        make install
+        cd ..
+        pip3 install .
+        echo "OpenMC has been updated to the latest version."
+
+        # Update the stored commit hash
+        echo "$openmc_new_version" >${env_dir}/var/log/OpenMC.version.txt
+        rm -rf openmc-repo
+        cd $current_working_dir
+        break
+      elif [ "$update_openmc" == "n" ]; then
+        echo "OpenMC update cancelled."
+        break
+      else
+        echo "Error: Invalid input."
+      fi
+    done
+  fi
+}
+
+__${env_name}_update_dagmc() {
+  echo "-------------------"
+  echo "Updating DAGMC..."
+  echo "-------------------"
+
+  # Get the latest commit hash of the develop branch
+  dagmc_new_version=$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git refs/heads/develop | awk '{print $1}')
+
+  # Read the previously stored commit hash from the file
+  dagmc_old_version=$(cat ${env_dir}/var/log/DAGMC.version.txt)
+
+  # Compare the new and old commit hashes
+  if [ "$dagmc_new_version" == "$dagmc_old_version" ]; then
+    echo "DAGMC is already up to date."
+  else
+    while true; do
+    echo "Update DAGMC from $dagmc_old_version to $dagmc_new_version? (default: y 10s) (y/n):
+"
+
+    if read -t 10 update_dagmc || [ $? -eq 142 ]; then
+      # Get the current working directory
+      current_working_dir=$(pwd)
+
+      # Navigate to the existing DAGMC installation directory
+      cd ${env_dir}
+
+      # Make a new temporary directory
+      mkdir -p tmp
+      cd tmp
+
+      # Remove the existing DAGMC repository if it exists
+      rm -rf dagmc-repo
+
+      # Clone the latest version of the DAGMC repository
+      git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
+      cd dagmc-repo
+      git checkout develop
+
+      # Perform the update steps
+      mkdir -p build
+      cd build
+      cmake ../ -DMOAB_CMAKE_CONFIG=$env_dir/lib/cmake/MOAB \
+        -DMOAB_DIR=$env_dir \
+        -DBUILD_STATIC_LIBS=OFF \
+        -DBUILD_GEANT4=ON \
+        -DGeant4_CMAKE_CONFIG=$env_dir/lib/cmake/Geant4 \
+        -DGEANT4_DIR=$env_dir \
+        -DBUILD_TALLY=ON \
+        -DCMAKE_INSTALL_PREFIX=$env_dir
+      make
+      make install
+      echo "DAGMC has been updated to the latest version."
+
+      # Update the stored commit hash
+      echo "$dagmc_new_version" >${env_dir}/var/log/DAGMC.version.txt
+      rm -rf dagmc-repo
+      cd $current_working_dir
+      break
+    elif [ "$update_dagmc" == "n" ]; then
+      echo "DAGMC update cancelled."
+      break
+    else
+      echo "Error: Invalid input."
+    fi
+    done
+  fi
+}
+
+__${env_name}_update_pyne() {
+  echo "------------------"
+  echo "Updating PyNE..."
+  echo "------------------"
+
+  # Get the latest commit hash of the develop branch
+  pyne_new_version=$(git ls-remote https://github.com/pyne/pyne.git refs/heads/develop | awk '{print $1}')
+
+  # Read the previously stored commit hash from the file
+  pyne_old_version=$(cat ${env_dir}/var/log/PyNE.version.txt)
+
+  # Compare the new and old commit hashes
+  if [ "$pyne_new_version" == "$pyne_old_version" ]; then
+    echo "PyNE is already up to date."
+  else
+    while true; do
+      echo "Update PyNE from $pyne_old_version to $pyne_new_version? (default: y 10s) (y/n):"
+
+      if read -t 10 update_pyne || [ $? -eq 142 ]; then
+        # Get the current working directory
+        current_working_dir=$(pwd)
+
+        # Navigate to the existing PyNE installation directory
+        cd ${env_dir}
+
+        # Make a new temporary directory
+        mkdir -p tmp
+        cd tmp
+
+        # Remove the existing PyNE repository if it exists
+        rm -rf pyne-repo
+
+        # Clone the latest version of the PyNE repository
+        git clone https://github.com/pyne/pyne.git pyne-repo
+        cd pyne-repo
+
+        # Run Setup
+        python3 setup.py install --prefix ${env_dir} \
+          --moab ${env_dir} \
+          --dagmc ${env_dir} \
+          --clean
+
+        # Perform any additional steps needed after installation/update
+        echo "Making PyNE nuclear data"
+        nuc_data_make
+
+        echo "PyNE has been updated to the latest version."
+
+        # Update the stored commit hash
+        echo "$pyne_new_version" >${env_dir}/var/log/PyNE.version.txt
+        rm -rf pyne-repo
+        cd $current_working_dir
+        break
+      elif [ "$update_pyne" == "n" ]; then
+        echo "PyNE update cancelled."
+        break
+      else
+        echo "Error: Invalid input."
+      fi
+    done
+  fi
+}
+
+__${env_name}_update(){
+  local comd=$1
+  case $comd in
+  geant4) __${env_name}_update_geant4 ;;
+  openmc) __${env_name}_update_openmc ;;
+  pyne) __${env_name}_update_pyne ;;
+  dagmc) __${env_name}_update_dagmc ;;
+  all) __${env_name}_update_geant4 && __${env_name}_update_openmc && __${env_name}_update_dagmc && __${env_name}_update_pyne ;;
+  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
+}
+
+__${env_name}_uninstall(){
+  echo "You are about to uninstall ${env_name}."
+  read -p "Are you sure? (y/n) " -n 1 -r
+  echo 
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Uninstalling ${env_name}..."
+    echo "Removing ${env_name} directory..."
+    rm -rf ${env_dir}
+    remove_from_shell(){
+      echo "Removing ${env_name} from your shell."
+      local config_file="$1"
+      if [ -f "$config_file" ]; then
+        sed -i '/if \[ -f "\${env_dir}\/\${env_name}" \]; then/,/fi/d' "$config_file"
+        echo "Removed ${env_name} from $config_file."
+      fi
+    }
+    remove_from_shell "$HOME/.bashrc"
+    remove_from_shell "$HOME/.zshrc"
+    remove_from_shell "$HOME/.config/fish/config.fish"
+    echo "${env_name} uninstalled."
+  else
+    echo "Uninstall cancelled."
+  fi
+}
+
+__${env_name}_help() {
+  echo "NuclearBoy: Toolkit for Nuclear Engineering Development
+
+Commands:
+  activate           Activate the NuclearBoy environment
+  deactivate         Deactivate the NuclearBoy environment
+  update geant4      Update Geant4 to the latest version
+  update openmc      Update OpenMC to the latest version
+  update pyne        Update PyNE to the latest version
+  update dagmc       Update DAGMC to the latest version
+  update all         Update all components (Geant4, OpenMC, PyNE, DAGMC)
+  endf <library>     Set the path for cross-section data library:
+                      - endfb70: ENDF/B-VII.0 (70)
+                      - endfb71: ENDF/B-VII.1 (71)
+                      - lib80x:  ENDF/B-VIII.0/X (80X)
+  uninstall          Uninstall the NuclearBoy toolkit
+
+Usage:
+  ${env_name} <command> [options]
+
+Note:
+  - Use 'activate' to activate the NuclearBoy environment.
+  - Use 'deactivate' to deactivate the NuclearBoy environment.
+  - Use 'update' with specific components to update them individually.
+  - Use 'update all' to update all components.
+  - Use 'endf <library>' to set the cross-section data library path.
+  - Use 'uninstall' to completely uninstall the NuclearBoy toolkit.
+
+Examples:
+  ${env_name} activate
+  ${env_name} update geant4
+  ${env_name} update all
+  ${env_name} endf endfb70
+  ${env_name} uninstall"
 }
 
 ${env_name}() {
@@ -554,10 +903,10 @@ ${env_name}() {
   case $comd in
   activate) __${env_name}_activate ;;
   deactivate) __${env_name}_deactivate ;;
+  update) __${env_name}_update $2 ;;
   endf) __${env_name}_set_cross_sections_path $2 ;;
-  help) echo "Usage: ${env_name} [activate|deactivate|endf [endfb70|endfb71|lib80x]]" ;;
-  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
-  esac
+  uninstall) __${env_name}_uninstall ;;
+  help) __${env_name}_help ;;
 }
 
 EOF
