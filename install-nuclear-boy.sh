@@ -212,6 +212,8 @@ setup_python_env() {
   source $env_dir/bin/activate
   pip3 install wheel
   pip3 install ${pip_package_list}
+  # create log directory
+  mkdir -p ${env_dir}/var/log
   echo "Python virtual env created."
 }
 
@@ -219,7 +221,6 @@ set_ld_library_path() {
   # hdf5 std directory
   hdf5_libdir=/usr/lib/x86_64-linux-gnu/hdf5/serial
   # need to put libhdf5.so on LD_LIBRARY_PATH
-
   if [ -z $LD_LIBRARY_PATH ]; then
     export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib"
   else
@@ -247,6 +248,7 @@ install_moab() {
   make
   make install
   cd ${env_dir}
+  # Remove the repository
   rm -rf "${env_dir}/moab-repo"
   echo "MOAB installed"
 }
@@ -255,7 +257,6 @@ set_geant4_data_lib() {
   if [ -z "$geant4_data_lib" ]; then
     while true; do
       read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4data'): " geant4_data_lib
-
       if [ -z "$geant4_data_lib" ]; then
         geant4_data_lib=$env_dir/G4data
         echo "Using default library path: $geant4_data_lib"
@@ -301,14 +302,18 @@ install_geant4() {
   echo "Installing Geant4..."
   echo "--------------------"
   cd ${env_dir}
-  # clone and version
-  wget https://github.com/Geant4/geant4/archive/refs/tags/v11.1.2.tar.gz
-  tar -xzvf v11.1.2.tar.gz
-  cd geant4-11.1.2
-
-  # Get Geant4 version
+  # Set Geant4 version
   geant4_version='v11.1.2'
+  # clone and version
+  wget https://github.com/Geant4/geant4/archive/refs/tags/${geant4_version}.tar.gz
+  tar -xzvf ${geant4_version}.tar.gz
+  # Navigate to the extracted directory
+  cd $(tar tzf ${geant4_version}.tar.gz | head -1 | cut -f1 -d"/")
+  # Create the directory if it doesn't exist
+  mkdir -p "${env_dir}/var/log/"
+  # Store the Geant4 version
   echo "$geant4_version" >${env_dir}/var/log/Geant4.version.txt
+  # Create Build directory
   mkdir -p build
   cd build
   # cmake, build and install
@@ -321,8 +326,9 @@ install_geant4() {
   make
   make install
   cd ${env_dir}
-  rm -rf "${env_dir}/geant4-11.1.2"
-  rm -rf "${env_dir}/v11.1.2.tar.gz"
+  # Remove the tarball and extracted directory
+  rm -rf "${env_dir}/$(tar tzf ${geant4_version}.tar.gz | head -1 | cut -f1 -d"/")"
+  rm -rf "${env_dir}/${geant4_version}.tar.gz"
   echo "Geant4 installed"
 }
 
@@ -335,7 +341,6 @@ install_dagmc() {
   # clone the repository
   git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
-
   # Get the latest commit hash of the develop branch
   dagmc_version=$(git rev-parse origin/develop)
   echo "$dagmc_version" >${env_dir}/var/log/DAGMC.version.txt
@@ -353,6 +358,7 @@ install_dagmc() {
   make
   make install
   cd ${env_dir}
+  # Remove the repository
   rm -rf "${env_dir}/dagmc-repo"
   echo "DAGMC installed"
 }
@@ -430,7 +436,6 @@ download_cross_section_data() {
           echo "Skipping download and extraction of mcnp_endfb70."
         fi
       fi
-
     else
       echo "Downloading ENDF/B-VII.0"
       download_and_extract "https://anl.box.com/shared/static/t25g7g6v0emygu50lr2ych1cf6o7454b.xz"
@@ -482,7 +487,6 @@ install_openmc() {
   git clone https://github.com/openmc-dev/openmc.git openmc-repo
   cd openmc-repo
   git checkout develop
-
   # Get the latest commit hash of the develop branch
   openmc_version=$(git rev-parse origin/develop)
   echo "$openmc_version" >${env_dir}/var/log/OpenMC.version.txt
@@ -492,12 +496,12 @@ install_openmc() {
   cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
     -DOPENMC_USE_DAGMC=ON \
     -DDAGMC_ROOT=$env_dir
-
   make
   make install
   cd ..
   pip3 install .
   cd ${env_dir}
+  # Remove the repository
   rm -rf "${env_dir}/openmc-repo"
   echo "OpenMC installed"
 }
@@ -511,17 +515,16 @@ install_pyne() {
   # clone and version
   git clone https://github.com/pyne/pyne.git pyne-repo
   cd pyne-repo
-
   # Get the latest commit hash of the develop branch
   pyne_version=$(git rev-parse origin/develop)
   echo "$pyne_version" >${env_dir}/var/log/PyNE.version.txt
-
   # Run setup
   python3 setup.py install --prefix ${env_dir} \
     --moab ${env_dir} \
     --dagmc ${env_dir} \
     --clean
   cd ${env_dir}
+  # Remove the repository
   rm -rf "${env_dir}/pyne-repo"
   echo "PyNE installed"
   echo "Making PyNE nuclear data"
@@ -569,13 +572,10 @@ __${env_name}_update_geant4() {
   echo "--------------------"
   echo "Updating Geant4..."
   echo "--------------------"
-
   # Get the latest version tag from the Geant4 GitHub repository
   geant4_latest_version=$(git ls-remote --tags https://github.com/Geant4/geant4.git | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
-
   # Read the previously stored version tag from the file
   geant4_old_version=$(cat ${env_dir}/var/log/Geant4.version.txt)
-
   # Compare the new and old version tags
   if [ "$geant4_latest_version" == "$geant4_old_version" ]; then
     echo "Geant4 is already up to date."
@@ -583,25 +583,20 @@ __${env_name}_update_geant4() {
     while true; do
       echo "Update Geant4 from $geant4_old_version to $geant4_latest_version? (default: y 10s) (y/n):
 "
-
       if read -t 10 update_geant4 || [ $? -eq 142 ]; then
         # Get the current working directory
         current_working_dir=$(pwd)
-
         # Navigate to the existing Geant4 installation directory
         cd ${env_dir}
-
         # Make a new temporary directory
         mkdir -p tmp
         cd tmp
-
         # Download and extract the latest Geant4 version
         wget https://github.com/Geant4/geant4/archive/refs/tags/${geant4_latest_version}.tar.gz
         tar -xzvf ${geant4_latest_version}.tar.gz
         cd geant4-${geant4_latest_version}
         mkdir -p build
         cd build
-
         # cmake, build, and install
         cmake ../ -DGEANT4_INSTALL_DATA=$install_geant4_data \
           -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
@@ -609,12 +604,9 @@ __${env_name}_update_geant4() {
           -DGEANT4_USE_OPENGL_X11=OFF \
           -DGEANT4_USE_SYSTEM_EXPAT=OFF \
           -DCMAKE_INSTALL_PREFIX=$env_dir
-
         make
         make install
-
         echo "Geant4 has been updated to the latest version."
-
         # Update the stored version tag
         echo "$geant4_latest_version" >${env_dir}/var/log/Geant4.version.txt
         cd $current_working_dir
@@ -647,39 +639,31 @@ __${env_name}_update_openmc() {
     while true; do
       echo "Update OpenMC from $openmc_old_version to $openmc_new_version? (default: y 10s) (y/n):
 "
-
       if read -t 10 update_openmc || [ $? -eq 142 ]; then
         # Get the current working directory
         current_working_dir=$(pwd)
-
         # Navigate to the existing OpenMC installation directory
         cd ${env_dir}
-
         # Make a new temporary directory
         mkdir -p tmp
         cd tmp
-
         # Remove the existing OpenMC repository if it exists
         rm -rf openmc-repo
-
         # Clone the latest version of the OpenMC repository
         git clone https://github.com/openmc-dev/openmc.git openmc-repo
         cd openmc-repo
         git checkout develop
-
         # Perform the update steps
         mkdir -p bld
         cd bld
         cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
           -DOPENMC_USE_DAGMC=ON \
           -DDAGMC_ROOT=$env_dir
-
         make
         make install
         cd ..
         pip3 install .
         echo "OpenMC has been updated to the latest version."
-
         # Update the stored commit hash
         echo "$openmc_new_version" >${env_dir}/var/log/OpenMC.version.txt
         rm -rf openmc-repo
@@ -699,13 +683,10 @@ __${env_name}_update_dagmc() {
   echo "-------------------"
   echo "Updating DAGMC..."
   echo "-------------------"
-
   # Get the latest commit hash of the develop branch
   dagmc_new_version=$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git refs/heads/develop | awk '{print $1}')
-
   # Read the previously stored commit hash from the file
   dagmc_old_version=$(cat ${env_dir}/var/log/DAGMC.version.txt)
-
   # Compare the new and old commit hashes
   if [ "$dagmc_new_version" == "$dagmc_old_version" ]; then
     echo "DAGMC is already up to date."
@@ -713,26 +694,20 @@ __${env_name}_update_dagmc() {
     while true; do
     echo "Update DAGMC from $dagmc_old_version to $dagmc_new_version? (default: y 10s) (y/n):
 "
-
     if read -t 10 update_dagmc || [ $? -eq 142 ]; then
       # Get the current working directory
       current_working_dir=$(pwd)
-
       # Navigate to the existing DAGMC installation directory
       cd ${env_dir}
-
       # Make a new temporary directory
       mkdir -p tmp
       cd tmp
-
       # Remove the existing DAGMC repository if it exists
       rm -rf dagmc-repo
-
       # Clone the latest version of the DAGMC repository
       git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
       cd dagmc-repo
       git checkout develop
-
       # Perform the update steps
       mkdir -p build
       cd build
@@ -747,7 +722,6 @@ __${env_name}_update_dagmc() {
       make
       make install
       echo "DAGMC has been updated to the latest version."
-
       # Update the stored commit hash
       echo "$dagmc_new_version" >${env_dir}/var/log/DAGMC.version.txt
       rm -rf dagmc-repo
@@ -767,50 +741,39 @@ __${env_name}_update_pyne() {
   echo "------------------"
   echo "Updating PyNE..."
   echo "------------------"
-
   # Get the latest commit hash of the develop branch
   pyne_new_version=$(git ls-remote https://github.com/pyne/pyne.git refs/heads/develop | awk '{print $1}')
-
   # Read the previously stored commit hash from the file
   pyne_old_version=$(cat ${env_dir}/var/log/PyNE.version.txt)
-
   # Compare the new and old commit hashes
   if [ "$pyne_new_version" == "$pyne_old_version" ]; then
     echo "PyNE is already up to date."
   else
     while true; do
-      echo "Update PyNE from $pyne_old_version to $pyne_new_version? (default: y 10s) (y/n):"
-
+      echo "Update PyNE from $pyne_old_version to $pyne_new_version? (default: y 10s) (y/n):
+"
       if read -t 10 update_pyne || [ $? -eq 142 ]; then
         # Get the current working directory
         current_working_dir=$(pwd)
-
         # Navigate to the existing PyNE installation directory
         cd ${env_dir}
-
         # Make a new temporary directory
         mkdir -p tmp
         cd tmp
-
         # Remove the existing PyNE repository if it exists
         rm -rf pyne-repo
-
         # Clone the latest version of the PyNE repository
         git clone https://github.com/pyne/pyne.git pyne-repo
         cd pyne-repo
-
         # Run Setup
         python3 setup.py install --prefix ${env_dir} \
           --moab ${env_dir} \
           --dagmc ${env_dir} \
           --clean
-
         # Perform any additional steps needed after installation/update
         echo "Making PyNE nuclear data"
         nuc_data_make
-
         echo "PyNE has been updated to the latest version."
-
         # Update the stored commit hash
         echo "$pyne_new_version" >${env_dir}/var/log/PyNE.version.txt
         rm -rf pyne-repo
@@ -916,18 +879,15 @@ EOF
 
 add_to_shell() {
   echo "Adding ${env_name} to your shell."
-
   # Backup shell configuration files
   backup_dir="$HOME/.shell_config_backup"
   mkdir -p "$backup_dir"
-
   backup_and_append() {
     config_file="$1"
     if [ -f "$config_file" ]; then
       # Backup the original file
       backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
       cp "$config_file" "$backup_file"
-
       # Append to the config file if not already present
       if ! grep -q "${env_dir}/${env_name}" "$config_file"; then
         echo "Adding to $config_file"
@@ -945,7 +905,6 @@ EOF
   backup_and_append "$HOME/.bashrc"
   backup_and_append "$HOME/.zshrc"
   backup_and_append "$HOME/.config/fish/config.fish"
-
   echo "${env_name} added to your shell."
   echo "Backup files have been saved to ${backup_dir}"
   echo "Please restart your shell for changes to take effect."
