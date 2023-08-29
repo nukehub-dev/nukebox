@@ -1,4 +1,6 @@
-# <img src=".github/logo/nuclear-boy.svg" style="height: 24px" > NuclearBoy 
+# <img src=".github/logo/nuclear-boy.svg" style="height: 24px" > NuclearBoy
+ 
+![Build and Test](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/actions/workflows/run_build_and_test.yml/badge.svg)
 
 This is a shell script designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
 
