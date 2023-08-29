@@ -36,10 +36,10 @@ jobs:
 
       - name: Install NuclearBoy
         run: |
-          ./install-nuclear-boy.sh -d ~/ \
+          ./install-nuclear-boy.sh -d ${GITHUB_WORKSPACE} \
             -e nuclear-boy \
-            -g ~/nuclear-boy/G4Data \
-            -c ~/nuclear-boy/CrossSection
+            -g ${GITHUB_WORKSPACE}/nuclear-boy/G4Data \
+            -c ${GITHUB_WORKSPACE}/nuclear-boy/CrossSection
 
       - name: Run tests
         run: |
