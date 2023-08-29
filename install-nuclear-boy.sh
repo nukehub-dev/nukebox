@@ -218,7 +218,7 @@ setup_python_env() {
     echo "$version" >${env_dir}/var/log/Version.id
     echo "Python virtual env created."
   }
-  if [ -d "${env_dir}" ]; then
+  if [ -d "${env_dir}/bin" ]; then
     echo "Virtual environment already exists!"
     core_old_version=$(cat ${env_dir}/var/log/Version.id)
     core_new_version=$version
