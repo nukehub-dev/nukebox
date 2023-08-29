@@ -4,7 +4,7 @@
 set -e
 
 # Set the version
-version_id="0.0.1"
+version="0.0.1"
 
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
@@ -69,7 +69,7 @@ detect_version_id() {
     version_id="1"
   fi
 
-  echo "Detected version id as $version_id"
+  echo "Detected version id as $version"
 }
 
 # Parse command-line arguments
@@ -215,23 +215,23 @@ setup_python_env() {
     pip3 install ${pip_package_list}
     # create log directory
     mkdir -p ${env_dir}/var/log
-    echo "$version_id" >${env_dir}/var/log/Version.id
+    echo "$version" >${env_dir}/var/log/Version.id
     echo "Python virtual env created."
   }
   if [ -d "${env_dir}" ]; then
     echo "Virtual environment already exists!"
     core_old_version=$(cat ${env_dir}/var/log/Version.id)
-    core_new_version=$version_id
+    core_new_version=$version
     while true; do
-      read -p "Update NuclearBoy from \$core_old_version to \$core_new_version? (y/n): " -n 1 -r
+      read -p "Update NuclearBoy from $core_old_version to $core_new_version? (y/n): " -n 1 -r
       echo
-      if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
         source $env_dir/bin/activate
         break
-      elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
+      elif [[ $REPLY =~ ^[Nn]$ ]]; then
         read -p "Do you want to delete the previous NuclearBoy and create a new one? (y/n): " -n 1 -r
         echo
-        if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
           rm -rf "${env_dir}"
           create_new_env
           break
@@ -955,7 +955,7 @@ Project Home: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy"
 }
 
 __${env_name}_version(){
-  echo "NuclearBoy version ${version_id}"
+  echo "NuclearBoy version ${version}"
 }
 
 ${env_name}() {
