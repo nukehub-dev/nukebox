@@ -829,21 +829,30 @@ __${env_name}_help() {
   echo "NuclearBoy: Toolkit for Nuclear Engineering Development
 
 Commands:
+
   activate           Activate the NuclearBoy environment
+
   deactivate         Deactivate the NuclearBoy environment
-  update geant4      Update Geant4 to the latest version
-  update openmc      Update OpenMC to the latest version
-  update pyne        Update PyNE to the latest version
-  update dagmc       Update DAGMC to the latest version
-  update all         Update all components (Geant4, OpenMC, PyNE, DAGMC)
+
+  update <module>    Update component
+                      - geant4:   Update Geant4 to the latest version
+                      - openmc:   Update OpenMC to the latest version
+                      - dagmc:    Update DAGMC to the latest version
+                      - pyne:     Update PyNE to the latest version
+                      - all:      Update all components (Geant4, OpenMC, DAGMC, PyNE)
+  
   endf <library>     Set the path for cross-section data library:
                       - endfb70: ENDF/B-VII.0 (70)
                       - endfb71: ENDF/B-VII.1 (71)
                       - lib80x:  ENDF/B-VIII.0/X (80X)
+  
   uninstall          Uninstall the NuclearBoy toolkit
 
+
 Usage:
+
   ${env_name} <command> [options]
+
 
 Note:
   - Use 'activate' to activate the NuclearBoy environment.
@@ -852,6 +861,7 @@ Note:
   - Use 'update all' to update all components.
   - Use 'endf <library>' to set the cross-section data library path.
   - Use 'uninstall' to completely uninstall the NuclearBoy toolkit.
+
 
 Examples:
   ${env_name} activate
