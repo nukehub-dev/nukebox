@@ -120,30 +120,29 @@ You can also provide the configuration options directly from the command line.
 Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuclear-boy`). 
 
 **Commands:**
-
+- `-h` or `--help`: Display help
+- `-V` or `--version`: Display version
 - `activate`: Activate the NuclearBoy environment
 - `deactivate`: Deactivate the NuclearBoy environment
 - `update <module>`: Update component
+  - `core`: Update NuclearBoy
   - `geant4`: Update Geant4 to the latest version
   - `dagmc`: Update DAGMC to the latest version
   - `openmc`: Update OpenMC to the latest version
   - `pyne`: Update PyNE to the latest version
-  - `all`: Update all components (Geant4, DAGMC, OpenMC, PyNE)
+  - `all`: Update all components (NuclearBoy, Geant4, DAGMC, OpenMC, and PyNE)
 - `endf <library>`: Set the path for cross-section data library:
   - `endfb70`: ENDF/B-VII.0 (70)
   - `endfb71`: ENDF/B-VII.1 (71)
   - `lib80x`: ENDF/B-VIII.0/X (80X)
 - `uninstall`: Uninstall the NuclearBoy toolkit
-- `help`: Display help
 
 **Usage:**
-
 ```sh
 nuclear-boy <command> [options]
 ```
 
 **Note:**
-
 - Use `activate` to activate the NuclearBoy environment.
 - Use `deactivate` to deactivate the NuclearBoy environment.
 - Use `update` with specific components to update them individually.
@@ -152,7 +151,6 @@ nuclear-boy <command> [options]
 - Use `uninstall` to completely uninstall the NuclearBoy toolkit.
 
 **Examples:**
-
 ```sh
 nuclear-boy activate
 nuclear-boy update geant4
