@@ -592,7 +592,7 @@ else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:\$LD_LIBRARY_PATH"
 fi
 
-export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5"
+export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71"
 
 __${env_name}_activate(){
   source ${env_dir}/bin/activate 
