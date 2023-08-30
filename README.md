@@ -2,7 +2,7 @@
  
 ![Build and Test](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/actions/workflows/run_build_and_test.yml/badge.svg)
 
-This is a shell script designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
+This package manager is designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
 
 [pyne]: https://pyne.io/
 [openmc]: https://docs.openmc.org/en/stable/
