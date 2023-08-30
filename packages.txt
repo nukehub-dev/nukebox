@@ -3,7 +3,7 @@ tabulate
 jupyter 
 notebook 
 yt
-nose 
+pytest 
 matplotlib
 pandas
 openmc-plotter

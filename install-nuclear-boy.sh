@@ -261,6 +261,9 @@ install_moab() {
   echo "Installing MOAB..."
   echo "------------------"
   cd ${env_dir}
+  # make a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
   # clone and version
   git clone --branch release/v5.4.1 --single-branch https://bitbucket.org/fathomteam/moab moab-repo
   cd moab-repo
@@ -276,8 +279,8 @@ install_moab() {
   make
   make install
   cd ${env_dir}
-  # Remove the repository
-  rm -rf "${env_dir}/moab-repo"
+  # Remove the temporary directory
+  rm -rf ${env_dir}/.tmp
   echo "MOAB installed"
 }
 
@@ -330,6 +333,9 @@ install_geant4() {
   echo "Installing Geant4..."
   echo "--------------------"
   cd ${env_dir}
+  # make a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
   # Set Geant4 version
   geant4_version='v11.1.2'
   # clone and version
@@ -345,18 +351,22 @@ install_geant4() {
   mkdir -p build
   cd build
   # cmake, build and install
-  cmake ../ -DGEANT4_INSTALL_DATA=$install_geant4_data \
-    -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
+  cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
     -DGEANT4_USE_QT=ON \
     -DGEANT4_USE_OPENGL_X11=OFF \
     -DGEANT4_USE_SYSTEM_EXPAT=OFF \
-    -DCMAKE_INSTALL_PREFIX=$env_dir
+    -DGEANT4_BUILD_TLS_MODEL=global-dynamic \
+    -DGEANT4_BUILD_MULTITHREADED=ON \
+    -DGEANT4_INSTALL_DATA=$install_geant4_data \
+    -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
+    -DGEANT4_INSTALL_DATA_TIMEOUT=0
   make
   make install
+  # Enable Python bindings
+  ${env_dir}/bin/python3 -m pip install geant4-pybind
   cd ${env_dir}
-  # Remove the tarball and extracted directory
-  rm -rf "${env_dir}/$(tar tzf ${geant4_version}.tar.gz | head -1 | cut -f1 -d"/")"
-  rm -rf "${env_dir}/${geant4_version}.tar.gz"
+  # Remove the temporary directory
+  rm -rf ${env_dir}/.tmp
   echo "Geant4 installed"
 }
 
@@ -366,6 +376,9 @@ install_dagmc() {
   echo "-------------------"
   # pre-setup check that the directory we need are in place
   cd ${env_dir}
+  # make a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
   # clone the repository
   git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
@@ -386,8 +399,8 @@ install_dagmc() {
   make
   make install
   cd ${env_dir}
-  # Remove the repository
-  rm -rf "${env_dir}/dagmc-repo"
+  # Remove the temporary directory
+  rm -rf "${env_dir}/.tmp"
   echo "DAGMC installed"
 }
 
@@ -512,6 +525,9 @@ install_openmc() {
   echo "Installing OpenMC..."
   echo "--------------------"
   cd ${env_dir}
+  # create a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
   git clone https://github.com/openmc-dev/openmc.git openmc-repo
   cd openmc-repo
   git checkout develop
@@ -529,8 +545,8 @@ install_openmc() {
   cd ..
   pip3 install .
   cd ${env_dir}
-  # Remove the repository
-  rm -rf "${env_dir}/openmc-repo"
+  # Remove the temporary directory
+  rm -rf "${env_dir}/.tmp"
   echo "OpenMC installed"
 }
 
@@ -540,6 +556,9 @@ install_pyne() {
   echo "------------------"
   # pre-setup
   cd ${env_dir}
+  # make a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
   # clone and version
   git clone https://github.com/pyne/pyne.git pyne-repo
   cd pyne-repo
@@ -552,8 +571,8 @@ install_pyne() {
     --dagmc ${env_dir} \
     --clean
   cd ${env_dir}
-  # Remove the repository
-  rm -rf "${env_dir}/pyne-repo"
+  # Remove the temporary directory
+  rm -rf "${env_dir}/.tmp"
   echo "PyNE installed"
   echo "Making PyNE nuclear data"
   nuc_data_make
@@ -592,7 +611,7 @@ __${env_name}_set_cross_sections_path() {
   endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70" ;;
   endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71" ;;
   lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x" ;;
-  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
+  *) echo "Error: Invalid input. Use '${env_name} --help' for more information.";
   esac
 }
 
@@ -605,20 +624,33 @@ __${env_name}_update_geant4() {
   # Read the previously stored version tag from the file
   geant4_old_version=\$(cat ${env_dir}/var/log/Geant4.version.txt)
   # Compare the new and old version tags
-  if [ "\$geant4_latest_version" == "\$geant4_old_version" ]; then
+  if [[ "\$geant4_latest_version" == "\$geant4_old_version" ]]; then
     echo "Geant4 is already up to date."
   else
     while true; do
-      read -p "Update Geant4 from \$geant4_old_version to \$geant4_latest_version? (y/n): " -n 1 -r
-      echo 
+      echo "Update Geant4 from \$geant4_old_version to \$geant4_latest_version? (y/n): "
+      read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+        while true; do
+          echo "Do you want to download the latest Geant4 Data? (y/n): "
+          read -r REPLY
+          if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+            download_geant4_data="ON"
+            break
+          elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
+            download_geant4_data="OFF"
+            break
+          else
+            echo "Error: Invalid input."
+          fi
+        done
         # Get the current working directory
         current_working_dir=\$(pwd)
         # Navigate to the existing Geant4 installation directory
         cd ${env_dir}
         # Make a new temporary directory
-        mkdir -p tmp
-        cd tmp
+        mkdir -p .tmp
+        cd .tmp
         # Download and extract the latest Geant4 version
         wget https://github.com/Geant4/geant4/archive/refs/tags/\${geant4_latest_version}.tar.gz
         tar -xzvf \${geant4_latest_version}.tar.gz
@@ -626,17 +658,23 @@ __${env_name}_update_geant4() {
         mkdir -p build
         cd build
         # cmake, build, and install
-        cmake ../ -DGEANT4_INSTALL_DATA=$install_geant4_data \
-          -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \
-          -DGEANT4_USE_QT=ON \
-          -DGEANT4_USE_OPENGL_X11=OFF \
-          -DGEANT4_USE_SYSTEM_EXPAT=OFF \
-          -DCMAKE_INSTALL_PREFIX=$env_dir
+        cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \\
+          -DGEANT4_USE_QT=ON \\
+          -DGEANT4_USE_OPENGL_X11=OFF \\
+          -DGEANT4_USE_SYSTEM_EXPAT=OFF \\
+          -DGEANT4_BUILD_TLS_MODEL=global-dynamic \\
+          -DGEANT4_BUILD_MULTITHREADED=ON \\
+          -DGEANT4_INSTALL_DATA=\$download_geant4_data \\
+          -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \\
+          -DGEANT4_INSTALL_DATA_TIMEOUT=0
         make
         make install
+        ${env_dir}/bin/python3 -m pip install -U geant4-pybind
         echo "Geant4 has been updated to the latest version."
         # Update the stored version tag
         echo "\$geant4_latest_version" >\${env_dir}/var/log/Geant4.version.txt
+        # Remove the temporary directory
+        rm -rf "${env_dir}/.tmp"
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
@@ -653,28 +691,25 @@ __${env_name}_update_openmc() {
   echo "---------------------"
   echo "Updating OpenMC..."
   echo "---------------------"
-
   # Get the latest commit hash of the develop branch
   openmc_new_version=\$(git ls-remote https://github.com/openmc-dev/openmc.git refs/heads/develop | awk '{print \$1}')
-
   # Read the previously stored commit hash from the file
   openmc_old_version=\$(cat ${env_dir}/var/log/OpenMC.version.txt)
-
   # Compare the new and old commit hashes
-  if [ "\$openmc_new_version" == "\$openmc_old_version" ]; then
+  if [[ "\$openmc_new_version" == "\$openmc_old_version" ]]; then
     echo "OpenMC is already up to date."
   else
     while true; do
-      read -p "Update OpenMC from \$openmc_old_version to \$openmc_new_version? (y/n): " -n 1 -r
-      echo 
+      echo "Update OpenMC from \$openmc_old_version to \$openmc_new_version? (y/n): "
+      read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
         # Navigate to the existing OpenMC installation directory
         cd ${env_dir}
         # Make a new temporary directory
-        mkdir -p tmp
-        cd tmp
+        mkdir -p .tmp
+        cd .tmp
         # Remove the existing OpenMC repository if it exists
         rm -rf openmc-repo
         # Clone the latest version of the OpenMC repository
@@ -684,8 +719,8 @@ __${env_name}_update_openmc() {
         # Perform the update steps
         mkdir -p bld
         cd bld
-        cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \
-          -DOPENMC_USE_DAGMC=ON \
+        cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \\
+          -DOPENMC_USE_DAGMC=ON \\
           -DDAGMC_ROOT=$env_dir
         make
         make install
@@ -694,7 +729,8 @@ __${env_name}_update_openmc() {
         echo "OpenMC has been updated to the latest version."
         # Update the stored commit hash
         echo "\$openmc_new_version" >${env_dir}/var/log/OpenMC.version.txt
-        rm -rf openmc-repo
+        # Remove the temporary directory
+        rm -rf "${env_dir}/.tmp"
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
@@ -716,20 +752,20 @@ __${env_name}_update_dagmc() {
   # Read the previously stored commit hash from the file
   dagmc_old_version=\$(cat ${env_dir}/var/log/DAGMC.version.txt)
   # Compare the new and old commit hashes
-  if [ "\$dagmc_new_version" == "\$dagmc_old_version" ]; then
+  if [[ "\$dagmc_new_version" == "\$dagmc_old_version" ]]; then
     echo "DAGMC is already up to date."
   else
     while true; do
-      read -p "Update DAGMC from \$dagmc_old_version to \$dagmc_new_version? (y/n): " -n 1 -r
-      echo 
+      echo "Update DAGMC from \$dagmc_old_version to \$dagmc_new_version? (y/n): "
+      read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
         # Navigate to the existing DAGMC installation directory
         cd ${env_dir}
         # Make a new temporary directory
-        mkdir -p tmp
-        cd tmp
+        mkdir -p .tmp
+        cd .tmp
         # Remove the existing DAGMC repository if it exists
         rm -rf dagmc-repo
         # Clone the latest version of the DAGMC repository
@@ -739,20 +775,21 @@ __${env_name}_update_dagmc() {
         # Perform the update steps
         mkdir -p build
         cd build
-        cmake ../ -DMOAB_CMAKE_CONFIG=$env_dir/lib/cmake/MOAB \
-          -DMOAB_DIR=$env_dir \
-          -DBUILD_STATIC_LIBS=OFF \
-          -DBUILD_GEANT4=ON \
-          -DGeant4_CMAKE_CONFIG=$env_dir/lib/cmake/Geant4 \
-          -DGEANT4_DIR=$env_dir \
-          -DBUILD_TALLY=ON \
+        cmake ../ -DMOAB_CMAKE_CONFIG=$env_dir/lib/cmake/MOAB \\
+          -DMOAB_DIR=$env_dir \\
+          -DBUILD_STATIC_LIBS=OFF \\
+          -DBUILD_GEANT4=ON \\
+          -DGeant4_CMAKE_CONFIG=$env_dir/lib/cmake/Geant4 \\
+          -DGEANT4_DIR=$env_dir \\
+          -DBUILD_TALLY=ON \\
           -DCMAKE_INSTALL_PREFIX=$env_dir
         make
         make install
         echo "DAGMC has been updated to the latest version."
         # Update the stored commit hash
         echo "\$dagmc_new_version" >${env_dir}/var/log/DAGMC.version.txt
-        rm -rf dagmc-repo
+        # Remove the temporary directory
+        rm -rf "${env_dir}/.tmp"
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
@@ -774,29 +811,29 @@ __${env_name}_update_pyne() {
   # Read the previously stored commit hash from the file
   pyne_old_version=\$(cat ${env_dir}/var/log/PyNE.version.txt)
   # Compare the new and old commit hashes
-  if [ "\$pyne_new_version" == "\$pyne_old_version" ]; then
+  if [[ "\$pyne_new_version" == "\$pyne_old_version" ]]; then
     echo "PyNE is already up to date."
   else
     while true; do
-      read -p "Update PyNE from \$pyne_old_version to \$pyne_new_version? (y/n): " -n 1 -r
-      echo 
+      echo "Update PyNE from \$pyne_old_version to \$pyne_new_version? (y/n): "
+      read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
         # Navigate to the existing PyNE installation directory
         cd ${env_dir}
         # Make a new temporary directory
-        mkdir -p tmp
-        cd tmp
+        mkdir -p .tmp
+        cd .tmp
         # Remove the existing PyNE repository if it exists
         rm -rf pyne-repo
         # Clone the latest version of the PyNE repository
         git clone https://github.com/pyne/pyne.git pyne-repo
         cd pyne-repo
         # Run Setup
-        python3 setup.py install --prefix ${env_dir} \
-          --moab ${env_dir} \
-          --dagmc ${env_dir} \
+        python3 setup.py install --prefix ${env_dir} \\
+          --moab ${env_dir} \\
+          --dagmc ${env_dir} \\
           --clean
         # Perform any additional steps needed after installation/update
         echo "Making PyNE nuclear data"
@@ -804,7 +841,8 @@ __${env_name}_update_pyne() {
         echo "PyNE has been updated to the latest version."
         # Update the stored commit hash
         echo "\$pyne_new_version" >${env_dir}/var/log/PyNE.version.txt
-        rm -rf pyne-repo
+        # Remove the temporary directory
+        rm -rf "${env_dir}/.tmp"
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
@@ -826,29 +864,29 @@ __${env_name}_update_core(){
   # Read the previously stored commit hash from the file
   core_old_version=\$(cat ${env_dir}/var/log/Version.id)
   # Compare the new and old commit hashes
-  if [ "\$core_new_version" == "\$core_old_version" ]; then
+  if [[ "\$core_new_version" == "\$core_old_version" ]]; then
     echo "NuclearBoy is already up to date."
   else
     while true; do
-      read -p "Update NuclearBoy from \$core_old_version to \$core_new_version? (y/n): " -n 1 -r
-      echo
+      echo "Update NuclearBoy from \$core_old_version to \$core_new_version? (y/n): "
+      read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
         # Navigate to the existing NuclearBoy installation directory
         cd ${env_dir}
         # Make a new temporary directory
-        mkdir -p tmp
-        cd tmp
+        mkdir -p .tmp
+        cd .tmp
         # Remove the existing NuclearBoy repository if it exists
         rm -rf NuclearBoy
         # Clone the latest version of the NuclearBoy repository
         git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git NuclearBoy
         cd NuclearBoy
         # Run Setup
-        ./install-nuclear-boy.sh
+        ./install-nuclear-boy.sh -d ${env_dir} -e ${env_name}
         # Remove the temporary directory
-        rm -rf tmp
+        rm -rf ${env_dir}/.tmp
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
@@ -870,37 +908,43 @@ __${env_name}_update(){
   dagmc) __${env_name}_update_dagmc ;;
   core) __${env_name}_update_core ;;
   all) __${env_name}_update_core && __${env_name}_update_geant4 && __${env_name}_update_openmc && __${env_name}_update_dagmc && __${env_name}_update_pyne ;;
-  *) echo "Error: Invalid input. Use '${env_name} help' for more information.";
+  *) echo "Error: Invalid input. Use '${env_name} --help' for more information.";
   esac
 }
 
 __${env_name}_uninstall(){
   echo "You are about to uninstall ${env_name}."
-  read -p "Are you sure? (y/n) " -n 1 -r
-  echo 
-  if [[ \$REPLY =~ ^[Yy]$ ]]; then
-    echo "Uninstalling ${env_name}..."
-    echo "Removing ${env_name} directory..."
-    rm -rf ${env_dir}
-    remove_from_shell(){
-      echo "Removing ${env_name} from your shell."
-      local config_file="\$1"
-      if [ -f "\$config_file" ]; then
-        sed -i '/if \[ -f "${env_dir}\/${env_name}" \]; then/,/fi/d' "\$config_file"
-        echo "Removed ${env_name} from \$config_file."
-      fi
-    }
-    remove_from_shell "\$HOME/.bashrc"
-    remove_from_shell "\$HOME/.zshrc"
-    remove_from_shell "\$HOME/.config/fish/config.fish"
-    echo "${env_name} uninstalled."
+  echo -e "\033[31mAre you sure? (y/n) \033[0m"
+  read -r REPLY
+  if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+    echo -e "\033[31mType '${env_name}' to confirm: \033[0m"
+    read -r REPLY
+      if [[ "\$REPLY" == "${env_name}" ]]; then
+      echo "Uninstalling ${env_name}..."
+      echo "Removing ${env_name} directory..."
+      #rm -rf ${env_dir}
+      remove_from_shell(){
+        echo "Removing ${env_name} from your shell."
+        local config_file="\$1"
+        if [ -f "\$config_file" ]; then
+          sed -i '/#<<< NuclearBoy >>>#/,/#>>> NuclearBoy <<<#/d' "\$config_file"
+          echo "Removed ${env_name} from \$config_file."
+        fi
+      }
+      remove_from_shell "\$HOME/.bashrc"
+      remove_from_shell "\$HOME/.zshrc"
+      remove_from_shell "\$HOME/.config/fish/config.fish"
+      echo "${env_name} uninstalled."
+    else
+      echo "Name does not match. Uninstall cancelled."
+    fi
   else
     echo "Uninstall cancelled."
   fi
 }
 
 __${env_name}_help() {
-  echo "NuclearBoy: Toolkit for Nuclear Engineering Development
+  echo "NuclearBoy: Package Manager for Nuclear Engineering Development
 
 
 Commands:
@@ -963,8 +1007,8 @@ ${env_name}() {
   case \$comd in
   activate) __${env_name}_activate ;;
   deactivate) __${env_name}_deactivate ;;
-  update) __${env_name}_update $2 ;;
-  endf) __${env_name}_set_cross_sections_path $2 ;;
+  update) __${env_name}_update \$2 ;;
+  endf) __${env_name}_set_cross_sections_path \$2 ;;
   uninstall) __${env_name}_uninstall ;;
   -h|--help) __${env_name}_help ;;
   -V|--version) __${env_name}_version ;;
@@ -989,12 +1033,14 @@ add_to_shell() {
       backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
       cp "$config_file" "$backup_file"
       # Append to the config file if not already present
-      if ! grep -q "${env_dir}/${env_name}" "$config_file"; then
+      if ! grep -q "#<<< NuclearBoy >>>#" "$config_file" && ! grep -q "#>>> NuclearBoy <<<#" "$config_file"; then
         echo "Adding to $config_file"
         cat >>"$config_file" <<EOF
+#<<< NuclearBoy >>>#
 if [ -f "${env_dir}/${env_name}" ]; then
   source ${env_dir}/${env_name}
 fi
+#>>> NuclearBoy <<<#
 
 EOF
       fi
@@ -1013,7 +1059,7 @@ main() {
   detect_os
   detect_version_id
   echo "Welcome to the NuclearBoy installer!"
-  echo "This script will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
+  echo "This package manager will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
   echo
   set_install_directory
   set_env_name
