@@ -500,7 +500,7 @@ download_cross_section_data() {
       echo "Download and extraction of mcnp_endfb71 complete"
     fi
 
-    if [ -d "lib80x" ]; then
+    if [ -d "lib80x_hdf5" ]; then
       echo -n "ENDF/B-VIII.0 already exists. Do you want to download and extract it again? (default: y 10s) (y/n):
 "
       if read -t 10 choice_lib80x || [ $? -eq 142 ]; then
@@ -592,7 +592,7 @@ else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:\$LD_LIBRARY_PATH"
 fi
 
-export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x"
+export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5"
 
 __${env_name}_activate(){
   source ${env_dir}/bin/activate 
@@ -610,7 +610,7 @@ __${env_name}_set_cross_sections_path() {
   case \$cmd in
   endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70" ;;
   endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71" ;;
-  lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x" ;;
+  lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5" ;;
   *) echo "Error: Invalid input. Use '${env_name} --help' for more information.";
   esac
 }
