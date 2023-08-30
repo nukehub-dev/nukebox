@@ -4,7 +4,7 @@
 set -e
 
 # Set the version
-version="0.0.1"
+version="0.1.0"
 
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
