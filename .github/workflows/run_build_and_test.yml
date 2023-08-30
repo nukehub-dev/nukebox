@@ -22,7 +22,6 @@ jobs:
         with:
           root-reserve-mb: 512
           swap-size-mb: 1024
-          build-mount-path: ~/
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-docker-images: 'true'
@@ -38,17 +37,18 @@ jobs:
 
       - name: Install NuclearBoy
         run: |
-          ./install-nuclear-boy.sh -d ~/ \
+          ./install-nuclear-boy.sh -d ${GITHUB_WORKSPACE} \
             -e nuclear-boy \
-            -g ~/nuclear-boy/G4Data \
-            -c ~/nuclear-boy/CrossSection
-      
-      - name: Available disk space
-        run: df -h
+            -g ${GITHUB_WORKSPACE}/nuclear-boy/G4Data \
+            -c ${GITHUB_WORKSPACE}/nuclear-boy/CrossSection
 
+      - name: Available storage
+        run: |
+          df -h
+        
       - name: Run tests
         run: |
-          source ~/nuclear-boy/nuclear-boy
+          source ${GITHUB_WORKSPACE}/nuclear-boy/nuclear-boy
           nuclear-boy activate
           python -m pip install pytest
           python -m pytest -ra tests
