@@ -1,4 +1,4 @@
-# <img src=".github/logo/nuclear-boy.svg" style="height: 26px" > NuclearBoy
+# <img src=".github/logo/nuclear-boy.svg" style="height: 30px" > NuclearBoy
  
 ![Build and Test](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/actions/workflows/run_build_and_test.yml/badge.svg)
 
