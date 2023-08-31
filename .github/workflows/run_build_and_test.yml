@@ -40,12 +40,19 @@ jobs:
           ./install-nuclear-boy.sh -d ${GITHUB_WORKSPACE} \
             -e nuclear-boy \
             -g ${GITHUB_WORKSPACE}/nuclear-boy/G4Data \
-            -c ${GITHUB_WORKSPACE}/nuclear-boy/CrossSection
-
-      - name: Available storage
-        run: |
-          df -h
+            -c ${GITHUB_WORKSPACE}/nuclear-boy/CrossSectionData
         
+      - name: Check NuclearBoy directories
+        run: |
+          echo "NuclearBoy directory"
+          ls -h ${GITHUB_WORKSPACE}/nuclear-boy
+          echo
+          echo "G4Data directory"
+          ls -h ${GITHUB_WORKSPACE}/nuclear-boy/G4Data
+          echo
+          echo "CrossSection directory"
+          ls -h ${GITHUB_WORKSPACE}/nuclear-boy/CrossSectionData
+
       - name: Run tests
         run: |
           source ${GITHUB_WORKSPACE}/nuclear-boy/nuclear-boy

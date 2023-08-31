@@ -6,9 +6,9 @@ except ImportError:
     pymoab = None
 
 try:
-    from geant4_pybind import *
+    import geant4
 except ImportError:
-    geant4 = False
+    geant4 = None
 
 try:
     import openmc

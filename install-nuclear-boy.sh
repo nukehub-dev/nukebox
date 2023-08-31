@@ -72,31 +72,32 @@ detect_version_id() {
   echo "Detected version id as $version"
 }
 
-# Parse command-line arguments
-while getopts ":d:e:g:c:" opt; do
-  case $opt in
-  d)
-    install_dir="$OPTARG"
-    ;;
-  e)
-    env_name="$OPTARG"
-    ;;
-  g)
-    geant4_data_lib="$OPTARG"
-    ;;
-  c)
-    cross_section_data_lib="$OPTARG"
-    ;;
-  \?)
-    echo "Invalid option: -$OPTARG" >&2
-    exit 1
-    ;;
-  :)
-    echo "Option -$OPTARG requires an argument." >&2
-    exit 1
-    ;;
-  esac
-done
+parse_command_line_arguments() {
+  while getopts ":d:e:g:c:" opt; do
+    case $opt in
+    d)
+      install_dir="$OPTARG"
+      ;;
+    e)
+      env_name="$OPTARG"
+      ;;
+    g)
+      geant4_data_lib="$OPTARG"
+      ;;
+    c)
+      cross_section_data_lib="$OPTARG"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+    esac
+  done
+}
 
 set_install_directory() {
   if [ -z "$install_dir" ]; then
@@ -287,9 +288,10 @@ install_moab() {
 set_geant4_data_lib() {
   if [ -z "$geant4_data_lib" ]; then
     while true; do
-      read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4data'): " geant4_data_lib
+      read -p "Enter Geant4 data library path (or press enter for default '$env_dir/G4Data'): " geant4_data_lib
       if [ -z "$geant4_data_lib" ]; then
-        geant4_data_lib=$env_dir/G4data
+        geant4_data_lib=$env_dir/G4Data
+        mkdir -p $geant4_data_lib
         echo "Using default library path: $geant4_data_lib"
         break
       elif [ -d "$geant4_data_lib" ]; then
@@ -355,6 +357,7 @@ install_geant4() {
     -DGEANT4_USE_QT=ON \
     -DGEANT4_USE_OPENGL_X11=OFF \
     -DGEANT4_USE_SYSTEM_EXPAT=OFF \
+    -DGEANT4_USE_PYTHON=ON \
     -DGEANT4_BUILD_TLS_MODEL=global-dynamic \
     -DGEANT4_BUILD_MULTITHREADED=ON \
     -DGEANT4_INSTALL_DATA=$install_geant4_data \
@@ -362,8 +365,6 @@ install_geant4() {
     -DGEANT4_INSTALL_DATA_TIMEOUT=0
   make
   make install
-  # Enable Python bindings
-  ${env_dir}/bin/python3 -m pip install geant4-pybind
   cd ${env_dir}
   # Remove the temporary directory
   rm -rf ${env_dir}/.tmp
@@ -410,6 +411,7 @@ set_cross_section_lib() {
       read -p "Enter Cross Section data library path (or press enter for default '$env_dir/CrossSectionData'): " cross_section_data_lib
       if [ -z "$cross_section_data_lib" ]; then
         cross_section_data_lib=$env_dir/CrossSectionData
+        mkdir -p $cross_section_data_lib
         echo "Using default library path: $cross_section_data_lib"
         break
       elif [ -d "$cross_section_data_lib" ]; then
@@ -592,7 +594,7 @@ else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:\$LD_LIBRARY_PATH"
 fi
 
-export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71"
+export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5/cross_sections.xml"
 
 __${env_name}_activate(){
   source ${env_dir}/bin/activate 
@@ -608,9 +610,9 @@ __${env_name}_set_cross_sections_path() {
   fi
   local cmd=\$1
   case \$cmd in
-  endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70" ;;
-  endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71" ;;
-  lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5" ;;
+  endfb70) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb70/cross_sections.xml" ;;
+  endfb71) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/mcnp_endfb71/cross_sections.xml" ;;
+  lib80x) export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5/cross_sections.xml" ;;
   *) echo "Error: Invalid input. Use '${env_name} --help' for more information.";
   esac
 }
@@ -662,6 +664,7 @@ __${env_name}_update_geant4() {
           -DGEANT4_USE_QT=ON \\
           -DGEANT4_USE_OPENGL_X11=OFF \\
           -DGEANT4_USE_SYSTEM_EXPAT=OFF \\
+          -DGEANT4_USE_PYTHON=ON \\
           -DGEANT4_BUILD_TLS_MODEL=global-dynamic \\
           -DGEANT4_BUILD_MULTITHREADED=ON \\
           -DGEANT4_INSTALL_DATA=\$download_geant4_data \\
@@ -669,7 +672,6 @@ __${env_name}_update_geant4() {
           -DGEANT4_INSTALL_DATA_TIMEOUT=0
         make
         make install
-        ${env_dir}/bin/python3 -m pip install -U geant4-pybind
         echo "Geant4 has been updated to the latest version."
         # Update the stored version tag
         echo "\$geant4_latest_version" >\${env_dir}/var/log/Geant4.version.txt
@@ -1061,6 +1063,7 @@ main() {
   echo "Welcome to the NuclearBoy installer!"
   echo "This package manager will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
   echo
+  parse_command_line_arguments
   set_install_directory
   set_env_name
   set_geant4_data_lib
