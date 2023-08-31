@@ -6,6 +6,32 @@ set -e
 # Set the version
 Version="0.1.0"
 
+# Parse command line arguments
+  while getopts ":d:e:g:c:" opt; do
+    case $opt in
+    d)
+      install_dir="$OPTARG"
+      ;;
+    e)
+      env_name="$OPTARG"
+      ;;
+    g)
+      geant4_data_lib="$OPTARG"
+      ;;
+    c)
+      cross_section_data_lib="$OPTARG"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+    esac
+  done
+
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
     # some systems dont have lsb-release yet have the lsb_release binary and
@@ -70,33 +96,6 @@ detect_version_id() {
   fi
 
   echo "Detected version id as $version"
-}
-
-parse_command_line_arguments() {
-  while getopts ":d:e:g:c:" opt; do
-    case $opt in
-    d)
-      install_dir="$OPTARG"
-      ;;
-    e)
-      env_name="$OPTARG"
-      ;;
-    g)
-      geant4_data_lib="$OPTARG"
-      ;;
-    c)
-      cross_section_data_lib="$OPTARG"
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-    :)
-      echo "Option -$OPTARG requires an argument." >&2
-      exit 1
-      ;;
-    esac
-  done
 }
 
 set_install_directory() {
@@ -1065,7 +1064,6 @@ main() {
   echo "Welcome to the NuclearBoy installer!"
   echo "This package manager will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
   echo
-  parse_command_line_arguments
   set_install_directory
   set_env_name
   set_geant4_data_lib
