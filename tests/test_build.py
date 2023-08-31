@@ -6,7 +6,7 @@ except ImportError:
     pymoab = None
 
 try:
-    import geant4
+    from geant4_pybind import *
 except ImportError:
     geant4 = None
 

@@ -7,30 +7,30 @@ set -e
 Version="0.1.0"
 
 # Parse command line arguments
-  while getopts ":d:e:g:c:" opt; do
-    case $opt in
-    d)
-      install_dir="$OPTARG"
-      ;;
-    e)
-      env_name="$OPTARG"
-      ;;
-    g)
-      geant4_data_lib="$OPTARG"
-      ;;
-    c)
-      cross_section_data_lib="$OPTARG"
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-    :)
-      echo "Option -$OPTARG requires an argument." >&2
-      exit 1
-      ;;
-    esac
-  done
+while getopts ":d:e:g:c:" opt; do
+  case $opt in
+  d)
+    install_dir="$OPTARG"
+    ;;
+  e)
+    env_name="$OPTARG"
+    ;;
+  g)
+    geant4_data_lib="$OPTARG"
+    ;;
+  c)
+    cross_section_data_lib="$OPTARG"
+    ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    exit 1
+    ;;
+  :)
+    echo "Option -$OPTARG requires an argument." >&2
+    exit 1
+    ;;
+  esac
+done
 
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
@@ -215,13 +215,13 @@ setup_python_env() {
     pip3 install ${pip_package_list}
     # create log directory
     mkdir -p ${env_dir}/var/log
-    echo "$version" >${env_dir}/var/log/Version.id
+    echo "$Version" >${env_dir}/var/log/Version.id
     echo "Python virtual env created."
   }
   if [ -d "${env_dir}/bin" ]; then
     echo "Virtual environment already exists!"
     core_old_version=$(cat ${env_dir}/var/log/Version.id)
-    core_new_version=$version
+    core_new_version=$Version
     while true; do
       read -p "Update NuclearBoy from $core_old_version to $core_new_version? (y/n): " -n 1 -r
       echo
@@ -356,7 +356,6 @@ install_geant4() {
     -DGEANT4_USE_QT=ON \
     -DGEANT4_USE_OPENGL_X11=OFF \
     -DGEANT4_USE_SYSTEM_EXPAT=OFF \
-    -DGEANT4_USE_PYTHON=ON \
     -DGEANT4_BUILD_TLS_MODEL=global-dynamic \
     -DGEANT4_BUILD_MULTITHREADED=ON \
     -DGEANT4_INSTALL_DATA=$install_geant4_data \
@@ -364,6 +363,8 @@ install_geant4() {
     -DGEANT4_INSTALL_DATA_TIMEOUT=0
   make
   make install
+  # Enable Python bindings
+  $env_dir/bin/python3 -m pip install -U geant4-pybind
   cd ${env_dir}
   # Remove the temporary directory
   rm -rf ${env_dir}/.tmp
@@ -618,75 +619,104 @@ __${env_name}_set_cross_sections_path() {
   esac
 }
 
+__${env_name}_update_geant4_worker(){
+  echo "Updating Geant4 from \$geant4_old_version to \$geant4_latest_version"
+  while true; do
+    echo "Do you want to download the latest Geant4 Data? (y/n): "
+    read -r REPLY
+    if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+      download_geant4_data="ON"
+      break
+    elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
+      download_geant4_data="OFF"
+      break
+    else
+      echo "Error: Invalid input."
+    fi
+  done
+  # Get the current working directory
+  current_working_dir=\$(pwd)
+  # Navigate to the existing Geant4 installation directory
+  cd ${env_dir}
+  # Make a new temporary directory
+  mkdir -p .tmp
+  cd .tmp
+  # Download and extract the latest Geant4 version
+  wget https://github.com/Geant4/geant4/archive/refs/tags/\${geant4_latest_version}.tar.gz
+  tar -xzvf \${geant4_latest_version}.tar.gz
+  cd \$(tar tzf \${geant4_version}.tar.gz | head -1 | cut -f1 -d"/")
+  mkdir -p build
+  cd build
+  # cmake, build, and install
+  cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \\
+    -DGEANT4_USE_QT=ON \\
+    -DGEANT4_USE_OPENGL_X11=OFF \\
+    -DGEANT4_USE_SYSTEM_EXPAT=OFF \\
+    -DGEANT4_BUILD_TLS_MODEL=global-dynamic \\
+    -DGEANT4_BUILD_MULTITHREADED=ON \\
+    -DGEANT4_INSTALL_DATA=\$download_geant4_data \\
+    -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \\
+    -DGEANT4_INSTALL_DATA_TIMEOUT=0
+  make
+  make install
+  $env_dir/bin/python3 -m pip install -U geant4-pybind
+  echo "Geant4 has been updated to the latest version."
+  # Update the stored version tag
+  echo "\$geant4_latest_version" >\${env_dir}/var/log/Geant4.version.txt
+  # Remove the temporary directory
+  rm -rf "${env_dir}/.tmp"
+  cd \$current_working_dir
+}
+
 __${env_name}_update_geant4() {
   echo "--------------------"
   echo "Updating Geant4..."
   echo "--------------------"
   # Get the latest version tag from the Geant4 GitHub repository
-  geant4_latest_version=\$(git ls-remote --tags https://github.com/Geant4/geant4.git | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+  geant4_latest_beta_version=\$(git ls-remote --tags https://github.com/Geant4/geant4.git | grep -oP 'refs/tags/v\d+\.\d+\.\d+.beta+\^\{\}' | grep -oP 'v\d+\.\d+\.\d+.beta+' | sort -V | tail -n1)
+  geant4_latest_stable_version=\$(git ls-remote --tags https://github.com/Geant4/geant4.git | grep -oP 'refs/tags/v\d+\.\d+\.\d+\^\{\}' | grep -oP 'v\d+\.\d+\.\d+' | sort -V | tail -n1)
   # Read the previously stored version tag from the file
   geant4_old_version=\$(cat ${env_dir}/var/log/Geant4.version.txt)
   # Compare the new and old version tags
-  if [[ "\$geant4_latest_version" == "\$geant4_old_version" ]]; then
+  if [[ "\$geant4_latest_beta_version" < "\$geant4_old_version" ]]; then
     echo "Geant4 is already up to date."
   else
-    while true; do
-      echo "Update Geant4 from \$geant4_old_version to \$geant4_latest_version? (y/n): "
-      read -r REPLY
-      if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+    if [[ "\$geant4_latest_beta_version" > "\$geant4_latest_stable_version" ]]; then
+      if [[ "\$geant4_latest_stable_version" > "\$geant4_old_version" ]]; then
+        echo "New Geant4 stable version is available: \$geant4_latest_stable_version"
+        echo "There is also a beta version available: \$geant4_latest_beta_version"
         while true; do
-          echo "Do you want to download the latest Geant4 Data? (y/n): "
+          echo "Which version would you like to use? (stable/beta): "
           read -r REPLY
-          if [[ \$REPLY =~ ^[Yy]\$ ]]; then
-            download_geant4_data="ON"
+          if [[ \$REPLY =~ ^[Ss][Tt][Aa][Bb][Ee]\$ ]]; then
+            geant4_latest_version="\$geant4_latest_stable_version"
             break
-          elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
-            download_geant4_data="OFF"
+          elif [[ \$REPLY =~ ^[Bb][Ee][Tt][Aa][Ll]\$ ]]; then
+            geant4_latest_version="\$geant4_latest_beta_version"
             break
           else
             echo "Error: Invalid input."
           fi
         done
-        # Get the current working directory
-        current_working_dir=\$(pwd)
-        # Navigate to the existing Geant4 installation directory
-        cd ${env_dir}
-        # Make a new temporary directory
-        mkdir -p .tmp
-        cd .tmp
-        # Download and extract the latest Geant4 version
-        wget https://github.com/Geant4/geant4/archive/refs/tags/\${geant4_latest_version}.tar.gz
-        tar -xzvf \${geant4_latest_version}.tar.gz
-        cd \$(tar tzf \${geant4_version}.tar.gz | head -1 | cut -f1 -d"/")
-        mkdir -p build
-        cd build
-        # cmake, build, and install
-        cmake ../ -DCMAKE_INSTALL_PREFIX=$env_dir \\
-          -DGEANT4_USE_QT=ON \\
-          -DGEANT4_USE_OPENGL_X11=OFF \\
-          -DGEANT4_USE_SYSTEM_EXPAT=OFF \\
-          -DGEANT4_USE_PYTHON=ON \\
-          -DGEANT4_BUILD_TLS_MODEL=global-dynamic \\
-          -DGEANT4_BUILD_MULTITHREADED=ON \\
-          -DGEANT4_INSTALL_DATA=\$download_geant4_data \\
-          -DGEANT4_INSTALL_DATADIR=$geant4_data_lib \\
-          -DGEANT4_INSTALL_DATA_TIMEOUT=0
-        make
-        make install
-        echo "Geant4 has been updated to the latest version."
-        # Update the stored version tag
-        echo "\$geant4_latest_version" >\${env_dir}/var/log/Geant4.version.txt
-        # Remove the temporary directory
-        rm -rf "${env_dir}/.tmp"
-        cd \$current_working_dir
-        break
-      elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
-        echo "Geant4 update cancelled."
-        break
+        __${env_name}_update_geant4_worker
       else
-        echo "Error: Invalid input."
+        echo "New Geant4 beta version is available: \$geant4_latest_beta_version"
+        while true; do
+          echo "Do you want to use the beta version? (y/n): "
+          read -r REPLY
+          if [[ \$REPLY =~ ^[Yy]\$ ]]; then
+            geant4_latest_version="\$geant4_latest_beta_version"
+            __${env_name}_update_geant4_worker
+            break
+          elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
+            echo "Geant4 update cancelled."
+            break
+          else
+            echo "Error: Invalid input."
+          fi
+        done
       fi
-    done
+    fi
   fi
 }
 
