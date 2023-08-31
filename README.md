@@ -99,8 +99,8 @@ You can also provide the configuration options directly from the command line.
 4. **MOAB (Mesh-Oriented datABase) Installation:**
    MOAB is a software component that provides a flexible, efficient, and easy-to-use interface for storing and accessing mesh data in MOAB-based applications. The script installs MOAB version 5.4.1 with support for HDF5 and Python.
 
-5. **Geant4 Installation:**
-   Geant4 is a toolkit for the simulation of the passage of particles through matter. The script installs Geant4 version 11.1.2 with optional data installation, using the specified Geant4 data library path.
+5. **Geant4 (for GEometry ANd Tracking) Installation:**
+   Geant4 is a software toolkit that simulates the passage of particles through matter. The script installs version 11.1.2 of Geant4, with the option to install data libraries in a specified path. The [geant4-pybind](https://github.com/HaarigerHarald/geant4_pybind) package is used to enable Python support.
 
 6. **DAGMC (Direct Accelerated Geometry Monte Carlo) Installation:**
    DAGMC is an extension of Geant4 that enables direct use of CAD (Computer-Aided Design) geometry in Monte Carlo radiation transport simulations. The script installs DAGMC with support for MOAB and Geant4.
