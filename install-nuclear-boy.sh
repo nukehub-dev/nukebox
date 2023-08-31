@@ -4,7 +4,7 @@
 set -e
 
 # Set the version
-version="0.1.0"
+Version="0.1.0"
 
 detect_os() {
   if [[ (-z "${os}") && (-z "${dist}") ]]; then
@@ -594,6 +594,8 @@ else
   export LD_LIBRARY_PATH="${hdf5_libdir}:${env_dir}/lib:\$LD_LIBRARY_PATH"
 fi
 
+export GEANT4_DATA_DIR="${geant4_data_lib}"
+
 export OPENMC_CROSS_SECTIONS="${cross_section_data_lib}/lib80x_hdf5/cross_sections.xml"
 
 __${env_name}_activate(){
@@ -1001,7 +1003,7 @@ Project Home: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy"
 }
 
 __${env_name}_version(){
-  echo "NuclearBoy version ${version}"
+  echo "NuclearBoy version ${Version}"
 }
 
 ${env_name}() {
