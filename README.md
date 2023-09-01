@@ -1,6 +1,8 @@
-# <img src=".github/logo/nuclear-boy.svg" style="height: 30px" > NuclearBoy
+<h1 style="text-align: center;font-size: 54px"><img src=".github/logo/nuclear-boy.svg" style="height: 100px" > NuclearBoy</h1>
  
-![Build and Test](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/actions/workflows/run_build_and_test.yml/badge.svg)
+![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
+)
+![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearBoy?style=flat-square&logo=github&label=Release&include_prereleases)
 
 This package manager is designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
 
