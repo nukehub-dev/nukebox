@@ -892,8 +892,8 @@ __${env_name}_update_core(){
   echo "----------------------"
   echo "Updating NuclearBoy..."
   echo "----------------------"
-  # Get the latest commit hash of the master branch
-  core_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git refs/tags/develop | awk '{print \$1}')
+  # Get the latest commit hash of the develop branch
+  core_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git develop | awk '{print \$1}')
   # Read the previously stored commit hash from the file
   core_old_version=\$(cat ${env_dir}/var/log/Version.id)
   # Compare the new and old commit hashes
@@ -917,7 +917,7 @@ __${env_name}_update_core(){
         git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git NuclearBoy
         cd NuclearBoy
         # Run Setup
-        ./install-nuclear-boy.sh -d ${env_dir} -e ${env_name}
+        ./install-nuclear-boy.sh -d ${install_dir} -e ${env_name}
         # Remove the temporary directory
         rm -rf ${env_dir}/.tmp
         cd \$current_working_dir
