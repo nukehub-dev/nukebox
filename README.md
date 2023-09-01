@@ -203,7 +203,7 @@ The NuclearBoy program is provided for informational purposes only. The authors 
 
 ## Contributing
 
-Contributions to this project are welcome. If you find any issues or have improvements to suggest, feel free to open a GitHub issue or create a pull request. For more information, check out the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+Contributions to this project are welcome. If you find any issues or have improvements to suggest, feel free to open a GitHub issue or create a pull request. For more information, check out the [CONTRIBUTING](CONTRIBUTING.md) page.
 
 ## Contact
 
