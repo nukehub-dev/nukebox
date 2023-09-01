@@ -1,5 +1,5 @@
 <center>
-   <h1 align="center" style="font-size: 54px"><img src=".github/logo/nuclear-boy.svg" alt="" style="height: 100px" > NuclearBoy</h1>
+   <h1 align="center" style="font-size: 60px"><img src=".github/logo/nuclear-boy.svg" alt="" style="height: 100px" > NuclearBoy</h1>
 </center>
 
 ![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
