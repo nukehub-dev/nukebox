@@ -11,10 +11,12 @@ This package manager is designed to set up a development environment for nuclear
 
 ## Usage
 
-1. Clone the repository or download the script directly to your local machine.
+1. Clone the repository or download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/latest) directly to your local machine.
 
    ```sh
-   git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git --depth 1 --branch master
+   git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git \
+     --depth 1 \
+     --branch master
    ```
 
 2. Make the script executable.
