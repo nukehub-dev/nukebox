@@ -1,5 +1,7 @@
-<h1 style="text-align: center;font-size: 54px"><img src=".github/logo/nuclear-boy.svg" style="height: 100px" > NuclearBoy</h1>
- 
+<center>
+   <h1 style="font-size: 54px"><img src=".github/logo/nuclear-boy.svg" alt="" style="height: 100px" > NuclearBoy</h1>
+</center>
+
 ![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
 ![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearBoy?style=flat-square&logo=github&label=Release&include_prereleases)
