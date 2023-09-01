@@ -1,0 +1,50 @@
+name: Build and Test
+
+on:
+  # allows running workflows manually
+  workflow_dispatch:
+
+  push:
+    branches:
+      - develop
+    paths:
+      - '.github/workflows/run_build_and_test.yml'
+      - 'install-nuclear-boy.sh'
+      - 'tests/**'
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 5120
+          swap-size-mb: 2048
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-docker-images: 'true'
+          remove-codeql: 'true'
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install NuclearBoy
+        run: |
+          ./install-nuclear-boy.sh -d ${GITHUB_WORKSPACE} \
+            -e nuclear-boy \
+            -g ${GITHUB_WORKSPACE}/nuclear-boy/G4Data \
+            -c ${GITHUB_WORKSPACE}/nuclear-boy/CrossSectionData
+
+      - name: Run tests
+        run: |
+          source ${GITHUB_WORKSPACE}/nuclear-boy/nuclear-boy
+          nuclear-boy activate
+          python -m pip install pytest
+          python -m pytest -ra tests
