@@ -1,8 +1,9 @@
-# <img src=".github/logo/nuclear-boy.svg" alt="" style="height: 60px">NuclearBoy</h1>
+# <img src=".github/logo/nuclear-boy.svg" alt="" style="height: 60px"> NuclearBoy</h1>
 
 ![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
 ![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearBoy?style=flat-square&logo=github&label=Release&include_prereleases)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8307492-blue?style=flat-square)](https://doi.org/10.5281/zenodo.8307492)
 
 This package manager is designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
 
@@ -13,22 +14,31 @@ This package manager is designed to set up a development environment for nuclear
 
 ## Usage
 
-1. Clone the repository or download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/latest) directly to your local machine.
+1. Download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/latest) and extract it to your local machine.
 
+   **Using wget:**
    ```sh
-   git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git \
-     --depth 1 \
-     --branch master
+   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/archive/refs/tags/0.1.1.tar.gz" -O - | tar -xz
+
+   ```
+   **Using curl:**
+   ```sh
+   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
    ```
 
-2. Make the script executable.
+2. Go to the NuclearBoy directory.
 
    ```sh
-   cd NuclearBoy
+   cd NuclearBoy-0.1.1
+   ```
+
+3. Make the `install-nuclear-boy.sh` script executable.
+
+   ```sh
    chmod +x install-nuclear-boy.sh
    ```
 
-3. Run the script.
+4. Run the script.
 
    ```sh
    ./install-nuclear-boy.sh
@@ -193,7 +203,7 @@ The NuclearBoy program is provided for informational purposes only. The authors 
 
 ## Contributing
 
-Contributions to this project are welcome. If you find any issues or have improvements to suggest, feel free to open a GitHub issue or create a pull request.
+Contributions to this project are welcome. If you find any issues or have improvements to suggest, feel free to open a GitHub issue or create a pull request. For more information, check out the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Contact
 
