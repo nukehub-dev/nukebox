@@ -1,6 +1,28 @@
 # Changelog
 
 
+## [v0.1.1] - 01/09/2023
+
+### Changed
+- Set logo height to 64px. (#4)
+
+### Fixed
+- Fixed uninstall issue. (#4)
+
+### Added Project Enhancements
+- Added DOI badge for the project. (#4)
+
+### Documentation
+- Updated user guide to install the NuclearBoy from releases. (#4)
+- Updated development guide. (#4)
+
+### Miscellaneous
+- Other minor improvements, optimizations, and code refinements.(#4)
+
+
+[v0.1.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.1.1
+
+
 ## [v0.1.0] - 01/09/2023
 
 ### Added
@@ -48,7 +70,7 @@
 ### Deprecated
 - Deprecated the old method of environment activation and program usage. (#3)
 
-[v0.1.0]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/0.1.0
+[v0.1.0]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.1.0
 
 
 
@@ -73,4 +95,4 @@
 ### Fixed
 - Set cython<3 (#2)
 
-[v0.0.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/0.0.1
+[v0.0.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.0.1
