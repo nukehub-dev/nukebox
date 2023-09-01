@@ -49,11 +49,11 @@ Contributions from the community help us grow and improve **NuclearBoy**. Follow
 
 If you're interested in contributing code, here's how to set up your development environment:
 
-1. Fork the repository with branch `develop`.
+1. Fork the [repository](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/fork).
 1. Clone your fork of the repository: `git clone https://github.com/<USERNAME>/<REPOSITORY_NAME>.git`
 2. Navigate to the project directory: `cd <REPOSITORY_NAME>`
 3. Check out development branch: `git checkout develop`
-4. Run the script: `./install-nuclear-boy.sh`
+4. Run the script: `./install-nuclear-boy.sh` and install NuclearBoy
 5. Install dependencies: `pip install -r packages.txt`
 6. Run tests: `pytest -ra tests`
 

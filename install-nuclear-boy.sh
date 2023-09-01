@@ -95,7 +95,7 @@ detect_version_id() {
     version_id="1"
   fi
 
-  echo "Detected version id as $version"
+  echo "Detected version id as $version_id"
 }
 
 set_install_directory() {
@@ -955,7 +955,7 @@ __${env_name}_uninstall(){
       if [[ "\$REPLY" == "${env_name}" ]]; then
       echo "Uninstalling ${env_name}..."
       echo "Removing ${env_name} directory..."
-      #rm -rf ${env_dir}
+      rm -rf ${env_dir}
       remove_from_shell(){
         echo "Removing ${env_name} from your shell."
         local config_file="\$1"
@@ -1091,8 +1091,13 @@ EOF
 main() {
   detect_os
   detect_version_id
-  echo "Welcome to the NuclearBoy installer!"
-  echo "This package manager will install the PyNE, OpenMC, DAGMC and Geant4 on your system."
+  echo
+  echo -e "\033[1mWelcome to the NuclearBoy installer!\033[0m"
+  echo "This package manager sets up a development 
+environment for nuclear physics simulations and calculations. 
+It automates the installation of various packages 
+and libraries (PyNE, OpenMC, DAGMC, and Geant4) required 
+for running nuclear physics simulations and analyses."
   echo
   set_install_directory
   set_env_name
