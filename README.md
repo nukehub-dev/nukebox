@@ -1,4 +1,4 @@
-# <img src=".github/logo/nuclear-boy.svg" alt="" style="height: 60px"> NuclearBoy</h1>
+# <img src=".github/logo/nuclear-boy.svg" alt="" style="height: 64px">NuclearBoy</h1>
 
 ![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
