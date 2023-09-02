@@ -25,11 +25,15 @@ This package manager is designed to set up a development environment for nuclear
    ```sh
    curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
    ```
+   **Using Git:** (Download the most recent commit) 
+   ```sh
+   git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git"
+   ```
 
 2. Go to the NuclearBoy directory.
 
    ```sh
-   cd NuclearBoy-0.1.1
+   cd NuclearBoy*
    ```
 
 3. Make the `install-nuclear-boy.sh` script executable.
