@@ -1,0 +1,20 @@
+.logo__image {
+  height: 64px !important;
+}
+.navbar-brand {
+  flex-direction: unset !important;
+}
+.logo__title {
+  font-size: 2rem !important;
+  font-weight: 600;
+}
+@media (max-width: 1220px) {
+  .bd-sidebar-primary {
+    flex-basis: auto !important;
+  }
+}
+.navbar-icon-links {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+}
