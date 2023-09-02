@@ -1,6 +1,13 @@
 # Changelog
 
 
+## Future Features
+
+### Added
+- Sphinx documentation. (#6 #7)
+- ReadTheDocs webpage. (#6 #7)
+
+
 ## [v0.1.1] - 01/09/2023
 
 ### Changed
