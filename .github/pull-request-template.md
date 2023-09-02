@@ -58,5 +58,8 @@ Notes to the reviewer, if needed.
 
 **Please confirm that you have followed our contributing guidelines and code of conduct.**
 
-[ ] I have read and followed the [Contributing Guidelines](../CONTRIBUTING.md)
-[ ] I have adhered to the [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [ ] I have read and followed the [Contributing Guidelines][contributing].
+- [ ] I have adhered to the [Code of Conduct][code-of-conduct].
+
+[contributing]: ../CONTRIBUTING.md
+[code-of-conduct]: ../CODE_OF_CONDUCT.md
