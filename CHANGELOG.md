@@ -8,7 +8,7 @@
 - ReadTheDocs webpage. (#6 #7)
 
 ### Changed
-- Remove ethicalads. (#8)
+- Remove ethicalads. (#8 #9)
 
 
 ## [v0.1.1] - 01/09/2023
