@@ -18,3 +18,6 @@
     flex-direction: column !important;
     align-items: center;
 }
+#ethical-ad-placement{
+  display: none !important;
+}
