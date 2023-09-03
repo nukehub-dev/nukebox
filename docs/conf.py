@@ -12,7 +12,7 @@ import re
 version_pattern = r'Version\s*=\s*"([^"]+)"'
 
 # Read the install.sh file
-with open('../install-nuclear-boy.sh', 'r') as install_file:
+with open("../install-nuclear-boy.sh", "r") as install_file:
     install_contents = install_file.read()
 
 # Search for the version using the pattern
@@ -63,6 +63,13 @@ html_favicon = "../.github/logo/nuclear-boy.svg"
 html_last_updated_fmt = ""
 html_static_path = ["_static"]
 html_css_files = ["nuclear-boy.css"]
+html_sidebars = {
+    "**": [
+        "navbar-logo",
+        "icon-links",
+        "sbt-sidebar-nav",
+    ]
+}
 html_theme_options = {
     "path_to_docs": "docs",
     "repository_url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy",
