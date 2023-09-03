@@ -7,6 +7,9 @@
 - Sphinx documentation. (#6 #7)
 - ReadTheDocs webpage. (#6 #7)
 
+### Changed
+- Remove ethicalads. (#8)
+
 
 ## [v0.1.1] - 01/09/2023
 
