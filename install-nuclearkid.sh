@@ -4,7 +4,7 @@
 set -e
 
 # Set the version
-Version="0.1.0"
+Version="0.1.2"
 
 # Parse command line arguments
 while getopts ":d:e:g:c:" opt; do
