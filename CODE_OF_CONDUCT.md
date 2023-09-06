@@ -1,6 +1,6 @@
 # Code of Conduct
 
-We, the contributors and maintainers of the NuclearBoy project, are committed to fostering an inclusive and welcoming community. This Code of Conduct outlines our expectations for all those who participate in our project, as well as the consequences for unacceptable behavior.
+We, the contributors and maintainers of the NuclearKid project, are committed to fostering an inclusive and welcoming community. This Code of Conduct outlines our expectations for all those who participate in our project, as well as the consequences for unacceptable behavior.
 
 ## Our Pledge
 
@@ -28,7 +28,7 @@ Unacceptable behaviors include, but are not limited to:
 
 ## Consequences of Unacceptable Behavior
 
-Unacceptable behavior will not be tolerated within the NuclearBoy community. Anyone asked to stop unacceptable behavior is expected to comply immediately.
+Unacceptable behavior will not be tolerated within the NuclearKid community. Anyone asked to stop unacceptable behavior is expected to comply immediately.
 
 If a participant engages in unacceptable behavior, the maintainers may take any action they deem appropriate, up to and including expulsion from the project's community and public communication channels, temporary or permanent bans, and reporting to appropriate authorities.
 

@@ -2,7 +2,7 @@
 
 ## Reporting Security Vulnerabilities
 
-At NuclearBoy, we take security vulnerabilities seriously and appreciate the efforts of security researchers and users in reporting potential issues. If you discover a security vulnerability in NuclearBoy, we kindly request that you follow responsible disclosure practices by adhering to the following guidelines:
+At NuclearKid, we take security vulnerabilities seriously and appreciate the efforts of security researchers and users in reporting potential issues. If you discover a security vulnerability in NuclearKid, we kindly request that you follow responsible disclosure practices by adhering to the following guidelines:
 
 ### Reporting Process
 
@@ -21,6 +21,6 @@ We are committed to addressing security vulnerabilities in a timely manner and e
 
 Upon receiving a security vulnerability report, our security team will promptly review and assess the issue. We will work diligently to develop and test appropriate fixes. As soon as a security update is available, we will include relevant details in the release notes of the affected software versions.
 
-We greatly value the contributions of security researchers and users in ensuring the security of NuclearBoy. Thank you for your dedication to the safety and integrity of our software.
+We greatly value the contributions of security researchers and users in ensuring the security of NuclearKid. Thank you for your dedication to the safety and integrity of our software.
 
 [Back to README](README.md)

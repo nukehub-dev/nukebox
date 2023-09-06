@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: >-
-  NuclearBoy: Package Manager for Nuclear Engineering
+  NuclearKid: Package Manager for Nuclear Engineering
   Development
 message: Nuclear Physics Simulation Toolkit
 type: software
@@ -13,9 +13,9 @@ authors:
 identifiers:
   - type: doi
     value: 10.5281/zenodo.8307492
-repository-code: 'https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy'
+repository-code: 'https://github.com/ahnaf-tahmid-chowdhury/NuclearKid'
 abstract: >-
-  NuclearBoy is a versatile package manager tailored for
+  NuclearKid is a versatile package manager tailored for
   nuclear engineering development, streamlining the setup of
   a comprehensive development environment for nuclear
   physics simulations and calculations. It facilitates the
@@ -26,7 +26,7 @@ abstract: >-
   dependencies, creates a Python virtual environment, and
   installs the required components. With user-configurable
   options and a straightforward installation process,
-  NuclearBoy simplifies the often complex task of setting up
+  NuclearKid simplifies the often complex task of setting up
   a nuclear engineering development environment, making it
   an invaluable tool for researchers and engineers in the
   field.

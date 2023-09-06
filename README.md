@@ -1,8 +1,8 @@
-# <img src=".github/logo/nuclear-boy.svg" alt="" style="height: 64px">NuclearBoy</h1>
+# <img src=".github/logo/nuclearkid.svg" alt="" style="height: 64px">NuclearKid</h1>
 
-![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
+![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearKid/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
-![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearBoy?style=flat-square&logo=github&label=Release&include_prereleases)
+![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearKid?style=flat-square&logo=github&label=Release&include_prereleases)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8307492-blue?style=flat-square)](https://doi.org/10.5281/zenodo.8307492)
 
 This package manager is designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
@@ -14,38 +14,38 @@ This package manager is designed to set up a development environment for nuclear
 
 ## Usage
 
-1. Download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/latest) and extract it to your local machine.
+1. Download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/latest) and extract it to your local machine.
 
    **Using wget:**
    ```sh
-   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/archive/refs/tags/v0.1.1.tar.gz" -O - | tar -xz
+   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" -O - | tar -xz
 
    ```
    **Using curl:**
    ```sh
-   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
+   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
    ```
    **Using Git:** (Download the most recent commit) 
    ```sh
-   git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git"
+   git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git"
    ```
 
-2. Go to the NuclearBoy directory.
+2. Go to the NuclearKid directory.
 
    ```sh
-   cd NuclearBoy*
+   cd NuclearKid*
    ```
 
-3. Make the `install-nuclear-boy.sh` script executable.
+3. Make the `install-nuclearkid.sh` script executable.
 
    ```sh
-   chmod +x install-nuclear-boy.sh
+   chmod +x install-nuclearkid.sh
    ```
 
 4. Run the script.
 
    ```sh
-   ./install-nuclear-boy.sh
+   ./install-nuclearkid.sh
    ```
 
 The script will guide you through the installation process and prompt you for necessary configuration options.
@@ -56,7 +56,7 @@ During the installation process, you'll be asked for the following configuration
 
 1. **Installation Directory Path**: Set the path where all the software will be installed. You can use the current directory or specify a custom directory.
 
-2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuclear-boy`, but you can provide a custom name.
+2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuclearkid`, but you can provide a custom name.
 
 3. **Geant4 Data Library Path**: If you choose to install Geant4 data, provide the path for the Geant4 data library. The default is a directory within the virtual environment.
 
@@ -71,7 +71,7 @@ During the installation process, you'll be asked for the following configuration
 You can also provide the configuration options directly from the command line.
 
 ```sh
-./install-nuclear-boy.sh -d <installation-directory> \
+./install-nuclearkid.sh -d <installation-directory> \
    -e <environment-name> \
    -g <geant4-data-library-path> \
    -c <cross-section-library-path>
@@ -133,50 +133,50 @@ You can also provide the configuration options directly from the command line.
    The script creates an executable program file (shell script) in the specified installation directory with the given environment name.
 
 10. **Add to Path:**
-   The script adds the NuclearBoy directory to the user's `PATH` environment variable.
+   The script adds the NuclearKid directory to the user's `PATH` environment variable.
 
 ## Activation and Usage
 
-Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuclear-boy`). 
+Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuclearkid`). 
 
 **Commands:**
 - `-h` or `--help`: Display help
 - `-V` or `--version`: Display version
-- `activate`: Activate the NuclearBoy environment
-- `deactivate`: Deactivate the NuclearBoy environment
+- `activate`: Activate the NuclearKid environment
+- `deactivate`: Deactivate the NuclearKid environment
 - `update <module>`: Update component
-  - `core`: Update NuclearBoy
+  - `core`: Update NuclearKid
   - `geant4`: Update Geant4 to the latest version
   - `dagmc`: Update DAGMC to the latest version
   - `openmc`: Update OpenMC to the latest version
   - `pyne`: Update PyNE to the latest version
-  - `all`: Update all components (NuclearBoy, Geant4, DAGMC, OpenMC, and PyNE)
+  - `all`: Update all components (NuclearKid, Geant4, DAGMC, OpenMC, and PyNE)
 - `endf <library>`: Set the path for cross-section data library:
   - `endfb70`: ENDF/B-VII.0 (70)
   - `endfb71`: ENDF/B-VII.1 (71)
   - `lib80x`: ENDF/B-VIII.0/X (80X)
-- `uninstall`: Uninstall the NuclearBoy toolkit
+- `uninstall`: Uninstall the NuclearKid toolkit
 
 **Usage:**
 ```sh
-nuclear-boy <command> [options]
+nuclearkid <command> [options]
 ```
 
 **Note:**
-- Use `activate` to activate the NuclearBoy environment.
-- Use `deactivate` to deactivate the NuclearBoy environment.
+- Use `activate` to activate the NuclearKid environment.
+- Use `deactivate` to deactivate the NuclearKid environment.
 - Use `update` with specific components to update them individually.
 - Use `update all` to update all components.
 - Use `endf <library>` to set the cross-section data library path.
-- Use `uninstall` to completely uninstall the NuclearBoy toolkit.
+- Use `uninstall` to completely uninstall the NuclearKid toolkit.
 
 **Examples:**
 ```sh
-nuclear-boy activate
-nuclear-boy update geant4
-nuclear-boy update all
-nuclear-boy endf endfb70
-nuclear-boy uninstall
+nuclearkid activate
+nuclearkid update geant4
+nuclearkid update all
+nuclearkid endf endfb70
+nuclearkid uninstall
 ```
 
 ## Recommended Packages
@@ -184,7 +184,7 @@ nuclear-boy uninstall
 The installer script provides a list of recommended Python packages in the `packages.txt` file. These packages complement the functionality of the installed software. To install them, use:
 
 ```sh
-nuclear-boy activate
+nuclearkid activate
 pip3 install -r packages.txt --default-timeout=0
 ```
 
@@ -203,7 +203,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-The NuclearBoy program is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
+The NuclearKid program is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
 
 ## Contributing
 

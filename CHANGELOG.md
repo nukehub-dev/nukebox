@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Future Features
+## [v0.1.2] - 06/09/2023
 
 ### Added
 - Sphinx documentation. (#6 #7)
@@ -9,6 +9,11 @@
 
 ### Changed
 - Remove ethicalads. (#8 #9)
+- Rename `nuclearboy` to `nuclearkid`. (#10)
+- Rename NuclearBoy to NuclearKid. (#10)
+
+
+[v0.1.2]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.1.2
 
 
 ## [v0.1.1] - 01/09/2023
@@ -30,7 +35,7 @@
 - Other minor improvements, optimizations, and code refinements.(#4)
 
 
-[v0.1.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.1.1
+[v0.1.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.1.1
 
 
 ## [v0.1.0] - 01/09/2023
@@ -80,7 +85,7 @@
 ### Deprecated
 - Deprecated the old method of environment activation and program usage. (#3)
 
-[v0.1.0]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.1.0
+[v0.1.0]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.1.0
 
 
 
@@ -105,4 +110,4 @@
 ### Fixed
 - Set cython<3 (#2)
 
-[v0.0.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases/tag/v0.0.1
+[v0.0.1]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.0.1
