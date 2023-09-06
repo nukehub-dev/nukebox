@@ -10,7 +10,7 @@
 ### Changed
 - Remove ethicalads. (#8 #9)
 - Rename `nuclearboy` to `nuclearkid`. (#10)
-- Rename NuclearBoy to NuclearKid. (#10)
+- Rename NuclearBoy to NuclearKid. (#10 #11)
 
 
 [v0.1.2]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.1.2
