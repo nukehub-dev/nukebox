@@ -1003,7 +1003,7 @@ Commands:
                       - endfb71: ENDF/B-VII.1 (71)
                       - lib80x:  ENDF/B-VIII.0/X (80X)
   
-  uninstall          Uninstall the NuclearKid toolkit
+  uninstall          Uninstall NuclearKid
 
 
 Usage:
@@ -1017,7 +1017,7 @@ Note:
   - Use 'update' with specific components to update them individually.
   - Use 'update all' to update all components.
   - Use 'endf <library>' to set the cross-section data library path.
-  - Use 'uninstall' to completely uninstall the NuclearKid toolkit.
+  - Use 'uninstall' to completely uninstall NuclearKid.
 
 
 Examples:
