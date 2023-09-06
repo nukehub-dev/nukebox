@@ -18,12 +18,12 @@ This package manager is designed to set up a development environment for nuclear
 
    **Using wget:**
    ```sh
-   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" -O - | tar -xz
+   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" -O - | tar -xz
 
    ```
    **Using curl:**
    ```sh
-   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
+   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" | tar -xz
    ```
    **Using Git:** (Download the most recent commit) 
    ```sh

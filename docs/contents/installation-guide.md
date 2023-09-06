@@ -6,22 +6,31 @@ Follow these steps to install **NuclearKid** on your local machine.
 
 You can download the latest release of **NuclearKid** from the [GitHub releases page](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/latest). You have multiple options for downloading:
 
-### Using wget:
+```{eval-rst}
+.. tabs::
 
-```sh
-wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" -O - | tar -xz
-```
+   .. tab:: Wget
 
-### Using curl:
+      .. code-block:: sh
 
-```sh
-curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.1.tar.gz" | tar -xz
-```
+         wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" -O - | tar -xz
 
-### Using Git (Download the most recent commit):
 
-```sh
-git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git"
+   .. tab:: Curl
+
+      .. code-block:: sh
+
+         curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" | tar -xz
+
+   .. tab:: Git
+
+      .. note::
+         This will download the most recent commit
+
+      .. code-block:: sh
+
+         git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git"
+
 ```
 
 ## Step 2: Navigate to the NuclearKid Directory
@@ -80,4 +89,4 @@ nuclearkid activate
 pip3 install -r packages.txt --default-timeout=0
 ```
 
-Please ensure that you have appropriate permissions to install software on your system. The script may require you to enter your administrator password (sudo) during the installation process.
+Please ensure that you have appropriate permissions to install software on your system. The script may require you to enter your administrator password `sudo` during the installation process.

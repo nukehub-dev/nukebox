@@ -37,7 +37,6 @@ jobs:
 
       - name: Install NuclearKid
         run: |
-          chmod +x install-nuclearkid.sh
           ./install-nuclearkid.sh -d ${GITHUB_WORKSPACE} \
             -e nuclearkid \
             -g ${GITHUB_WORKSPACE}/nuclearkid/G4Data \
