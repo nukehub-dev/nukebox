@@ -16,7 +16,7 @@
 - Tab colors. (#13)
 
 ### Documentation
-- Updated user guide to install the NuclearBoy from releases. (#12)
+- Updated user guide to install the NuclearKid from releases. (#12)
 - Updated welcome page and templates. (#12)
 
 [v0.1.2]: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/tag/v0.1.2
