@@ -68,6 +68,6 @@ To simplify the usage of the installed tools, the script creates an executable p
 
 ## 10. Add to Path
 
-Finally, the script ensures that the **NuclearBoy** installation directory is added to the user's `PATH` environment variable, making it easier to access the installed tools from the command line.
+Finally, the script ensures that the **NuclearKid** installation directory is added to the user's `PATH` environment variable, making it easier to access the installed tools from the command line.
 
 The installation process described above ensures that the required software components and dependencies are properly configured for nuclear engineering and simulation tasks, providing users with a complete environment for their work.

@@ -12,7 +12,7 @@ import re
 version_pattern = r'Version\s*=\s*"([^"]+)"'
 
 # Read the install.sh file
-with open("../install-nuclear-boy.sh", "r") as install_file:
+with open("../install-nuclearkid.sh", "r") as install_file:
     install_contents = install_file.read()
 
 # Search for the version using the pattern
@@ -25,7 +25,7 @@ else:
     # Set a default version if not found
     version = "Unknown"
 
-project = "NuclearBoy"
+project = "NuclearKid"
 copyright = "2023, Ahnaf Tahmid Chowdhury"
 author = "Ahnaf Tahmid Chowdhury"
 release = version
@@ -56,13 +56,13 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_book_theme"
-html_logo = "../.github/logo/nuclear-boy.svg"
-html_title = "NuclearBoy"
+html_logo = "../.github/logo/nuclearkid.svg"
+html_title = "NuclearKid"
 html_copy_source = True
-html_favicon = "../.github/logo/nuclear-boy.svg"
+html_favicon = "../.github/logo/nuclearkid.svg"
 html_last_updated_fmt = ""
 html_static_path = ["_static"]
-html_css_files = ["nuclear-boy.css"]
+html_css_files = ["nuclearkid.css"]
 html_sidebars = {
     "**": [
         "navbar-logo",
@@ -72,7 +72,7 @@ html_sidebars = {
 }
 html_theme_options = {
     "path_to_docs": "docs",
-    "repository_url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy",
+    "repository_url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid",
     "repository_branch": "develop",
     "use_edit_page_button": True,
     "use_source_button": True,
@@ -88,14 +88,14 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "Release",
-            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/releases",
-            "icon": "https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearBoy?style=flat-square&logo=github&label=Release&include_prereleases",
+            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases",
+            "icon": "https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearKid?style=flat-square&logo=github&label=Release&include_prereleases",
             "type": "url",
         },
         {
             "name": "Build and Test",
-            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/blob/develop/.github/workflows/run_build_and_test.yml",
-            "icon": "https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearBoy/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test",
+            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/blob/develop/.github/workflows/run_build_and_test.yml",
+            "icon": "https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearKid/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test",
             "type": "url",
         },
         {

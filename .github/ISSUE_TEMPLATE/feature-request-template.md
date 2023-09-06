@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest enhancements or new features to elevate NuclearBoy
+about: Suggest enhancements or new features to elevate NuclearKid
 title: '[FEATURE] Concise description of the feature'
 labels: enhancement
 assignees: ''

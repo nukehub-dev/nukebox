@@ -127,10 +127,10 @@ set_install_directory() {
 
 set_env_name() {
   if [ -z "$env_name" ]; then
-    read -p "Enter environment name (or press enter for default 'nuclear-boy'): " env_name
+    read -p "Enter environment name (or press enter for default 'nuclearkid'): " env_name
 
     if [ -z "$env_name" ]; then
-      env_name="nuclear-boy"
+      env_name="nuclearkid"
       echo "Using default environment name: $env_name"
     else
       echo "Using custom environment name: $env_name"
@@ -223,13 +223,13 @@ setup_python_env() {
     core_old_version=$(cat ${env_dir}/var/log/Version.id)
     core_new_version=$Version
     while true; do
-      read -p "Update NuclearBoy from $core_old_version to $core_new_version? (y/n): " -n 1 -r
+      read -p "Update NuclearKid from $core_old_version to $core_new_version? (y/n): " -n 1 -r
       echo
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         source $env_dir/bin/activate
         break
       elif [[ $REPLY =~ ^[Nn]$ ]]; then
-        read -p "Do you want to delete the previous NuclearBoy and create a new one? (y/n): " -n 1 -r
+        read -p "Do you want to delete the previous NuclearKid and create a new one? (y/n): " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           rm -rf "${env_dir}"
@@ -890,40 +890,40 @@ __${env_name}_update_pyne() {
 
 __${env_name}_update_core(){
   echo "----------------------"
-  echo "Updating NuclearBoy..."
+  echo "Updating NuclearKid..."
   echo "----------------------"
   # Get the latest commit hash of the develop branch
-  core_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git develop | awk '{print \$1}')
+  core_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git develop | awk '{print \$1}')
   # Read the previously stored commit hash from the file
   core_old_version=\$(cat ${env_dir}/var/log/Version.id)
   # Compare the new and old commit hashes
   if [[ "\$core_new_version" == "\$core_old_version" ]]; then
-    echo "NuclearBoy is already up to date."
+    echo "NuclearKid is already up to date."
   else
     while true; do
-      echo "Update NuclearBoy from \$core_old_version to \$core_new_version? (y/n): "
+      echo "Update NuclearKid from \$core_old_version to \$core_new_version? (y/n): "
       read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
-        # Navigate to the existing NuclearBoy installation directory
+        # Navigate to the existing NuclearKid installation directory
         cd ${env_dir}
         # Make a new temporary directory
         mkdir -p .tmp
         cd .tmp
-        # Remove the existing NuclearBoy repository if it exists
-        rm -rf NuclearBoy
-        # Clone the latest version of the NuclearBoy repository
-        git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy.git NuclearBoy
-        cd NuclearBoy
+        # Remove the existing NuclearKid repository if it exists
+        rm -rf NuclearKid
+        # Clone the latest version of the NuclearKid repository
+        git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git NuclearKid
+        cd NuclearKid
         # Run Setup
-        ./install-nuclear-boy.sh -d ${install_dir} -e ${env_name}
+        ./install-nuclearkid.sh -d ${install_dir} -e ${env_name}
         # Remove the temporary directory
         rm -rf ${env_dir}/.tmp
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
-        echo "NuclearBoy update cancelled."
+        echo "NuclearKid update cancelled."
         break
       else
         echo "Error: Invalid input."
@@ -960,7 +960,7 @@ __${env_name}_uninstall(){
         echo "Removing ${env_name} from your shell."
         local config_file="\$1"
         if [ -f "\$config_file" ]; then
-          sed -i '/#<<< NuclearBoy >>>#/,/#>>> NuclearBoy <<<#/d' "\$config_file"
+          sed -i '/#<<< NuclearKid >>>#/,/#>>> NuclearKid <<<#/d' "\$config_file"
           echo "Removed ${env_name} from \$config_file."
         fi
       }
@@ -977,7 +977,7 @@ __${env_name}_uninstall(){
 }
 
 __${env_name}_help() {
-  echo "NuclearBoy: Package Manager for Nuclear Engineering Development
+  echo "NuclearKid: Package Manager for Nuclear Engineering Development
 
 
 Commands:
@@ -986,12 +986,12 @@ Commands:
 
   -V, --version      Display version
 
-  activate           Activate the NuclearBoy environment
+  activate           Activate the NuclearKid environment
 
-  deactivate         Deactivate the NuclearBoy environment
+  deactivate         Deactivate the NuclearKid environment
 
   update <module>    Update component
-                      - core:     Update NuclearBoy
+                      - core:     Update NuclearKid
                       - geant4:   Update Geant4 to the latest version
                       - openmc:   Update OpenMC to the latest version
                       - dagmc:    Update DAGMC to the latest version
@@ -1003,7 +1003,7 @@ Commands:
                       - endfb71: ENDF/B-VII.1 (71)
                       - lib80x:  ENDF/B-VIII.0/X (80X)
   
-  uninstall          Uninstall the NuclearBoy toolkit
+  uninstall          Uninstall the NuclearKid toolkit
 
 
 Usage:
@@ -1012,12 +1012,12 @@ Usage:
 
 
 Note:
-  - Use 'activate' to activate the NuclearBoy environment.
-  - Use 'deactivate' to deactivate the NuclearBoy environment.
+  - Use 'activate' to activate the NuclearKid environment.
+  - Use 'deactivate' to deactivate the NuclearKid environment.
   - Use 'update' with specific components to update them individually.
   - Use 'update all' to update all components.
   - Use 'endf <library>' to set the cross-section data library path.
-  - Use 'uninstall' to completely uninstall the NuclearBoy toolkit.
+  - Use 'uninstall' to completely uninstall the NuclearKid toolkit.
 
 
 Examples:
@@ -1028,11 +1028,11 @@ Examples:
   ${env_name} uninstall
   
   
-Project Home: https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy"
+Project Home: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid"
 }
 
 __${env_name}_version(){
-  echo "NuclearBoy version ${Version}"
+  echo "NuclearKid version ${Version}"
 }
 
 ${env_name}() {
@@ -1066,14 +1066,14 @@ add_to_shell() {
       backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
       cp "$config_file" "$backup_file"
       # Append to the config file if not already present
-      if ! grep -q "#<<< NuclearBoy >>>#" "$config_file" && ! grep -q "#>>> NuclearBoy <<<#" "$config_file"; then
+      if ! grep -q "#<<< NuclearKid >>>#" "$config_file" && ! grep -q "#>>> NuclearKid <<<#" "$config_file"; then
         echo "Adding to $config_file"
         cat >>"$config_file" <<EOF
-#<<< NuclearBoy >>>#
+#<<< NuclearKid >>>#
 if [ -f "${env_dir}/${env_name}" ]; then
   source ${env_dir}/${env_name}
 fi
-#>>> NuclearBoy <<<#
+#>>> NuclearKid <<<#
 
 EOF
       fi
@@ -1092,7 +1092,7 @@ main() {
   detect_os
   detect_version_id
   echo
-  echo -e "\033[1mWelcome to the NuclearBoy installer!\033[0m"
+  echo -e "\033[1mWelcome to the NuclearKid installer!\033[0m"
   echo "This package manager sets up a development 
 environment for nuclear physics simulations and calculations. 
 It automates the installation of various packages 
@@ -1118,8 +1118,8 @@ for running nuclear physics simulations and analyses."
   create_program_file
   add_to_shell
   echo "==============================================="
-  echo "NuclearBoy installation finished"
-  echo "To activate NuclearBoy in your terminal type:"
+  echo "NuclearKid installation finished"
+  echo "To activate NuclearKid in your terminal type:"
   echo "${env_name} activate"
   echo "Recommended packages can be installed through:"
   echo "pip3 install -r packages.txt --default-timeout=0"

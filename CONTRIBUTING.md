@@ -1,6 +1,6 @@
-# Contributing to NuclearBoy
+# Contributing to NuclearKid
 
-Thank you for your interest in contributing to **NuclearBoy**! We appreciate your efforts to improve the project and make it more useful for the nuclear physics community.
+Thank you for your interest in contributing to **NuclearKid**! We appreciate your efforts to improve the project and make it more useful for the nuclear physics community.
 
 ## Code of Conduct
 
@@ -10,42 +10,42 @@ Please review and adhere to our [Code of Conduct][code-of-conduct] to ensure a r
 
 ### Reporting Bugs
 
-If you encounter a bug while using **NuclearBoy**, we want to know! Please follow these steps:
+If you encounter a bug while using **NuclearKid**, we want to know! Please follow these steps:
 
-1. Check the [existing issues](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/issues) to see if the bug has already been reported.
-2. If the bug is new, [open a new issue](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/issues/new) with a detailed bug report using the provided [bug report template][bug-report-template].
+1. Check the [existing issues](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/issues) to see if the bug has already been reported.
+2. If the bug is new, [open a new issue](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/issues/new) with a detailed bug report using the provided [bug report template][bug-report-template].
 3. Provide a clear description of the bug, steps to reproduce it, and your environment details.
 
 ### Suggesting Enhancements
 
 Have an idea for a new feature or improvement? We'd love to hear it! Here's what you can do:
 
-1. Review the [existing issues](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/issues) to avoid duplicate suggestions.
-2. If your idea is new, [open a new issue](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/issues/new) with a detailed description using the provided [feature request template][feature-request-template].
+1. Review the [existing issues](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/issues) to avoid duplicate suggestions.
+2. If your idea is new, [open a new issue](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/issues/new) with a detailed description using the provided [feature request template][feature-request-template].
 3. Explain why you think this enhancement is valuable and how it could benefit the users.
 
 ### Submitting Pull Requests
 
-Contributions from the community help us grow and improve **NuclearBoy**. Follow these steps to submit a pull request:
+Contributions from the community help us grow and improve **NuclearKid**. Follow these steps to submit a pull request:
 
 1. Fork the repository and create a new branch for your changes.
 2. Make your modifications, adhering to the coding guidelines.
 3. Test your changes thoroughly to ensure they work as intended.
-4. [Open a new pull request](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/compare) using the provided [pull request template][pull-request-template].
+4. [Open a new pull request](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/compare) using the provided [pull request template][pull-request-template].
 5. Provide a clear description of the changes, the problem they solve, and the testing steps.
 
 ## Development Setup
 
 If you're interested in contributing code, here's how to set up your development environment:
 
-1. Fork the [repository](https://github.com/ahnaf-tahmid-chowdhury/NuclearBoy/fork).
+1. Fork the [repository](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/fork).
 1. Clone your fork of the repository: 
   ```sh
   git clone https://github.com/<USERNAME>/<REPOSITORY_NAME>.git`
   ```
 2. Navigate to the project directory: `cd <REPOSITORY_NAME>`
 3. Check out development branch: `git checkout develop`
-4. Run the script: `./install-nuclear-boy.sh` and install NuclearBoy
+4. Run the script: `./install-nuclearkid.sh` and install NuclearKid
 5. Install dependencies: `pip install -r packages.txt`
 6. Run tests: `pytest -ra tests`
 
@@ -55,9 +55,9 @@ Please adhere to the established coding guidelines to maintain consistency acros
 
 ## License
 
-By contributing to **NuclearBoy**, you agree that your contributions will be licensed under the project's [license][license]. Your contributions will be acknowledged in the project's list of contributors.
+By contributing to **NuclearKid**, you agree that your contributions will be licensed under the project's [license][license]. Your contributions will be acknowledged in the project's list of contributors.
 
-Thank you for contributing to **NuclearBoy**!
+Thank you for contributing to **NuclearKid**!
 
 
 [bug-report-template]: .github/ISSUE_TEMPLATE/bug-report-template.md
