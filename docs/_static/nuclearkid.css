@@ -21,3 +21,14 @@
 #ethical-ad-placement{
   display: none !important;
 }
+
+.sphinx-tabs-panel{
+  border: 1px solid var(--pst-color-border) !important;
+  border-top: 0 !important;
+  background: none !important;
+}
+.sphinx-tabs-tab[aria-selected="true"]{
+  border: 1px solid var(--pst-color-border) !important;
+  border-bottom: 1px solid var(--pst-color-background) !important;
+  background-color: transparent !important;
+}
