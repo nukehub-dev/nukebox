@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import re
+import datetime
 
 # Define a regular expression pattern to match the Version variable in install.sh
 version_pattern = r'Version\s*=\s*"([^"]+)"'
@@ -22,12 +23,11 @@ if match:
     # Extract the version from the matched group
     version = match.group(1)
 else:
-    # Set a default version if not found
-    version = "Unknown"
+    # If the version is not found, raise an error
+    raise RuntimeError("Version not found in install-nuclearkid.sh file")
 
 project = "NuclearKid"
-copyright = "2023, Ahnaf Tahmid Chowdhury"
-author = "Ahnaf Tahmid Chowdhury"
+copyright = "{0}, NuclearKid Team".format(datetime.datetime.now().year)
 release = version
 
 # -- General configuration ---------------------------------------------------
