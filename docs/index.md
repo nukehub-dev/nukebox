@@ -42,7 +42,6 @@ Contributions to this project are highly encouraged! If you encounter issues or 
 :caption: Contents
 :hidden: true
 
-index
 contents/installation-guide
 contents/releasenotes/index
 contents/methodology
