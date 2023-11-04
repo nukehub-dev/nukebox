@@ -265,7 +265,7 @@ install_moab() {
   mkdir -p .tmp
   cd .tmp
   # clone and version
-  git clone --b 5.5.0 https://bitbucket.org/fathomteam/moab moab-repo
+  git clone -b 5.5.0 https://bitbucket.org/fathomteam/moab moab-repo
   cd moab-repo
   mkdir -p build
   cd build
