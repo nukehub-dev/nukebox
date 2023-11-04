@@ -9,7 +9,7 @@ on:
       - develop
     paths:
       - '.github/workflows/run_build_and_test.yml'
-      - 'install-nuclearkid.sh'
+      - 'install-nukebox.sh'
       - 'tests/**'
 
 jobs:
@@ -35,16 +35,16 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install NuclearKid
+      - name: Install NukeBox
         run: |
-          ./install-nuclearkid.sh -d ${GITHUB_WORKSPACE} \
-            -e nuclearkid \
-            -g ${GITHUB_WORKSPACE}/nuclearkid/G4Data \
-            -c ${GITHUB_WORKSPACE}/nuclearkid/CrossSectionData
+          ./install-nukebox.sh -d ${GITHUB_WORKSPACE} \
+            -e nukebox \
+            -g ${GITHUB_WORKSPACE}/nuke/G4Data \
+            -c ${GITHUB_WORKSPACE}/nuke/CrossSectionData
 
       - name: Run tests
         run: |
-          source ${GITHUB_WORKSPACE}/nuclearkid/nuclearkid
+          source ${GITHUB_WORKSPACE}/nuke/nuke
           nuclearkid activate
           python -m pip install pytest
           python -m pytest -ra tests

@@ -1,8 +1,8 @@
-# Welcome to NuclearKid
+# Welcome to NukeBox
 
-## 📦 What is NuclearKid?
+## 📦 What is NukeBox?
 
-**NuclearKid** is an efficient package manager specifically crafted to simplify the installation and management of vital packages and libraries required for nuclear physics simulations and analyses. It automates the setup procedure for essential tools like [PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4], making the life of nuclear physics enthusiasts much more convenient.
+**NukeBox** is an efficient package manager specifically crafted to simplify the installation and management of vital packages and libraries required for nuclear physics simulations and analyses. It automates the setup procedure for essential tools like [PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4], making the life of nuclear physics enthusiasts much more convenient.
 
 [pyne]: https://pyne.io/
 [openmc]: https://docs.openmc.org/en/stable/
@@ -12,26 +12,26 @@
 ## 🚀 How to Get Started?
 
 - Download the latest release.
-- Execute the `install-nuclearkid.sh` script.
+- Execute the `install-nukebox.sh` script.
 - Follow the prompts to customize your installation.
 
 ## 🛠 Installation Options
 
-**NuclearKid** provides installation flexibility, allowing you to choose your installation directory, environment name, Geant4 data library path, and cross-section library path. You can even opt to automatically download Geant4 data and cross-sections.
+**NukeBox** provides installation flexibility, allowing you to choose your installation directory, environment name, Geant4 data library path, and cross-section library path. You can even opt to automatically download Geant4 data and cross-sections.
 
 ## ⚙ How It Works
 
-**NuclearKid** takes care of all the heavy lifting for you. It identifies your operating system, installs necessary dependencies, and configures Python environments. It also offers convenient commands for activation, deactivation, updating, and more!
+**NukeBox** takes care of all the heavy lifting for you. It identifies your operating system, installs necessary dependencies, and configures Python environments. It also offers convenient commands for activation, deactivation, updating, and more!
 
 ## 🚨 Important Notes
 
 Before running the script on your system, please carefully review it and understand the installation process. Safety first!
 
-Currently, **NuclearKid** supports [Debian-based distributions](https://en.wikipedia.org/wiki/Category:Debian-based_distributions). Additionally, It compiles packages from source, which can be time-consuming. Our team is actively working on creating binary packages for internal components.
+Currently, **NukeBox** supports [Debian-based distributions](https://en.wikipedia.org/wiki/Category:Debian-based_distributions). Additionally, It compiles packages from source, which can be time-consuming. Our team is actively working on creating binary packages for internal components.
 
 ## 📜 License
 
-**NuclearKid** is distributed under the [MIT License](contents/license).
+**NukeBox** is distributed under the [MIT License](contents/license).
 
 ## 🤝 Contributing
 

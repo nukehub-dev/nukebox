@@ -13,7 +13,7 @@ import datetime
 version_pattern = r'Version\s*=\s*"([^"]+)"'
 
 # Read the install.sh file
-with open("../install-nuclearkid.sh", "r") as install_file:
+with open("../install-nukebox.sh", "r") as install_file:
     install_contents = install_file.read()
 
 # Search for the version using the pattern
@@ -24,10 +24,10 @@ if match:
     version = match.group(1)
 else:
     # If the version is not found, raise an error
-    raise RuntimeError("Version not found in install-nuclearkid.sh file")
+    raise RuntimeError("Version not found in install-nukebox.sh file")
 
-project = "NuclearKid"
-copyright = "{0}, NuclearKid Team".format(datetime.datetime.now().year)
+project = "NukeBox"
+copyright = "{0}, Nukehub Team".format(datetime.datetime.now().year)
 release = version
 
 # -- General configuration ---------------------------------------------------
@@ -56,13 +56,13 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_book_theme"
-html_logo = "../.github/logo/nuclearkid.svg"
-html_title = "NuclearKid"
+html_logo = "../.github/logo/nukebox.svg"
+html_title = "NukeBox"
 html_copy_source = True
-html_favicon = "../.github/logo/nuclearkid.svg"
+html_favicon = "../.github/logo/nukebox.svg"
 html_last_updated_fmt = ""
 html_static_path = ["_static"]
-html_css_files = ["nuclearkid.css"]
+html_css_files = ["nukebox.css"]
 html_sidebars = {
     "**": [
         "navbar-logo",
@@ -72,7 +72,7 @@ html_sidebars = {
 }
 html_theme_options = {
     "path_to_docs": "docs",
-    "repository_url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid",
+    "repository_url": "https://github.com/nukehub-dev/NukeBox",
     "repository_branch": "develop",
     "use_edit_page_button": True,
     "use_source_button": True,
@@ -88,14 +88,14 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "Release",
-            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases",
-            "icon": "https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearKid?style=flat-square&logo=github&label=Release&include_prereleases",
+            "url": "https://github.com/nukehub-dev/NukeBox/releases",
+            "icon": "https://img.shields.io/github/v/release/nukehub-dev/NukeBox?style=flat-square&logo=github&label=Release&include_prereleases",
             "type": "url",
         },
         {
             "name": "Build and Test",
-            "url": "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/blob/develop/.github/workflows/run_build_and_test.yml",
-            "icon": "https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearKid/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test",
+            "url": "https://github.com/nukehub-dev/NukeBox/blob/develop/.github/workflows/run_build_and_test.yml",
+            "icon": "https://img.shields.io/github/actions/workflow/status/nukehub-dev/NukeBox/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test",
             "type": "url",
         },
         {

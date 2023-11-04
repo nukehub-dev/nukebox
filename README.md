@@ -1,8 +1,8 @@
-# <img src=".github/logo/nuclearkid.svg" alt="" style="height: 64px">NuclearKid</h1>
+# <img src=".github/logo/nuclearkid.svg" alt="" style="height: 64px">NukeBox</h1>
 
-![Build and Test](https://img.shields.io/github/actions/workflow/status/ahnaf-tahmid-chowdhury/NuclearKid/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
+![Build and Test](https://img.shields.io/github/actions/workflow/status/nukehub-dev/NukeBox/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
-![Release](https://img.shields.io/github/v/release/ahnaf-tahmid-chowdhury/NuclearKid?style=flat-square&logo=github&label=Release&include_prereleases)
+![Release](https://img.shields.io/github/v/release/nukehub-dev/NukeBox?style=flat-square&logo=github&label=Release&include_prereleases)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8307492-blue?style=flat-square)](https://doi.org/10.5281/zenodo.8307492)
 
 This package manager is designed to set up a development environment for nuclear physics simulations and calculations. It automates the installation/update of various packages and libraries ([PyNE][pyne], [OpenMC][openmc], [DAGMC][dagmc], and [Geant4][geant4]) required for running nuclear physics simulations and analyses.
@@ -14,26 +14,26 @@ This package manager is designed to set up a development environment for nuclear
 
 ## Usage
 
-1. Download the [latest release](https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/releases/latest) and extract it to your local machine.
+1. Download the [latest release](https://github.com/nukehub-dev/NukeBox/releases/latest) and extract it to your local machine.
 
    **Using wget:**
    ```sh
-   wget "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" -O - | tar -xz
+   wget "https://github.com/nukehub-dev/NukeBox/archive/refs/tags/v0.1.3.tar.gz" -O - | tar -xz
 
    ```
    **Using curl:**
    ```sh
-   curl -L "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid/archive/refs/tags/v0.1.2.tar.gz" | tar -xz
+   curl -L "https://github.com/nukehub-dev/NukeBox/archive/refs/tags/v0.1.3.tar.gz" | tar -xz
    ```
    **Using Git:** (Download the most recent commit) 
    ```sh
-   git clone "https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git"
+   git clone "https://github.com/nukehub-dev/NukeBox.git"
    ```
 
-2. Go to the NuclearKid directory.
+2. Go to the NukeBox directory.
 
    ```sh
-   cd NuclearKid*
+   cd NukeBox*
    ```
 
 3. Make the `install-nuclearkid.sh` script executable.
@@ -133,7 +133,7 @@ You can also provide the configuration options directly from the command line.
    The script creates an executable program file (shell script) in the specified installation directory with the given environment name.
 
 10. **Add to Path:**
-   The script adds the NuclearKid directory to the user's `PATH` environment variable.
+   The script adds the NukeBox directory to the user's `PATH` environment variable.
 
 ## Activation and Usage
 
@@ -142,41 +142,41 @@ Once the installation is complete, the script will create a program file named a
 **Commands:**
 - `-h` or `--help`: Display help
 - `-V` or `--version`: Display version
-- `activate`: Activate the NuclearKid environment
-- `deactivate`: Deactivate the NuclearKid environment
+- `activate`: Activate the NukeBox environment
+- `deactivate`: Deactivate the NukeBox environment
 - `update <module>`: Update component
-  - `core`: Update NuclearKid
+  - `core`: Update NukeBox
   - `geant4`: Update Geant4 to the latest version
   - `dagmc`: Update DAGMC to the latest version
   - `openmc`: Update OpenMC to the latest version
   - `pyne`: Update PyNE to the latest version
-  - `all`: Update all components (NuclearKid, Geant4, DAGMC, OpenMC, and PyNE)
+  - `all`: Update all components (NukeBox, Geant4, DAGMC, OpenMC, and PyNE)
 - `endf <library>`: Set the path for cross-section data library:
   - `endfb70`: ENDF/B-VII.0 (70)
   - `endfb71`: ENDF/B-VII.1 (71)
   - `lib80x`: ENDF/B-VIII.0/X (80X)
-- `uninstall`: Uninstall the NuclearKid toolkit
+- `uninstall`: Uninstall the NukeBox toolkit
 
 **Usage:**
 ```sh
-nuclearkid <command> [options]
+nuke <command> [options]
 ```
 
 **Note:**
-- Use `activate` to activate the NuclearKid environment.
-- Use `deactivate` to deactivate the NuclearKid environment.
+- Use `activate` to activate the NukeBox environment.
+- Use `deactivate` to deactivate the NukeBox environment.
 - Use `update` with specific components to update them individually.
 - Use `update all` to update all components.
 - Use `endf <library>` to set the cross-section data library path.
-- Use `uninstall` to completely uninstall the NuclearKid toolkit.
+- Use `uninstall` to completely uninstall the NukeBox toolkit.
 
 **Examples:**
 ```sh
-nuclearkid activate
-nuclearkid update geant4
-nuclearkid update all
-nuclearkid endf endfb70
-nuclearkid uninstall
+nuke activate
+nuke update geant4
+nuke update all
+nuke endf endfb70
+nuke uninstall
 ```
 
 ## Recommended Packages
@@ -184,7 +184,7 @@ nuclearkid uninstall
 The installer script provides a list of recommended Python packages in the `packages.txt` file. These packages complement the functionality of the installed software. To install them, use:
 
 ```sh
-nuclearkid activate
+nuke activate
 pip3 install -r packages.txt --default-timeout=0
 ```
 
@@ -203,7 +203,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-The NuclearKid program is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
+The NukeBox program is provided for informational purposes only. The authors and contributors are not responsible for any damages or issues caused by using this script. Use it at your own risk.
 
 ## Contributing
 
@@ -211,6 +211,7 @@ Contributions to this project are welcome. If you find any issues or have improv
 
 ## Contact
 
-For any questions or inquiries, please contact the maintainers of this project:
+For any questions or inquiries, please contact through:
 
-- [Ahnaf Tahmid Chowdhury](https://github.com/ahnaf-tahmid-chowdhury)
+- GitHub: [nukehub-dev](https://github.com/nukehub-dev)
+- NukeTalk: [https://talk.nukehub.org](https://talk.nukehub.org)

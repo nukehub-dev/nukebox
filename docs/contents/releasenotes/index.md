@@ -1,6 +1,6 @@
 # Release Notes
 
-This section provides a summary of version updates and changes for NuclearKid.
+This section provides a summary of version updates and changes for NukeBox.
 
 ```{toctree}
 :maxdepth: 1

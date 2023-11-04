@@ -2,22 +2,22 @@ Certainly! Here's the provided information in more detail using Markdown format:
 
 # Activation and Usage
 
-The **NuclearKid** is a powerful package manager toolkit, specifically crafted for managing and updating various nuclear physics components and libraries. This guide will walk you through the activation, usage, and available commands of this package manager.
+The **NukeBox** is a powerful package manager toolkit, specifically crafted for managing and updating various nuclear physics components and libraries. This guide will walk you through the activation, usage, and available commands of this package manager.
 
 ## Installation
 
-Before using the **NuclearKid**, you need to install it. Once the installation is complete, the script will create a program file named after the specified environment name, such as `nuclearkid`.
+Before using the **NukeBox**, you need to install it. Once the installation is complete, the script will create a program file named after the specified environment name, such as `nuke`.
 
 ## Commands
 
-**NuclearKid** supports the following commands:
+**NukeBox** supports the following commands:
 
 ### Display Help
 
 To display the help message, use the `-h` or `--help` flag:
 
 ```sh
-nuclearkid -h
+nuke -h
 ```
 
 ### Display Version
@@ -25,63 +25,63 @@ nuclearkid -h
 To display the version information, use the `-V` or `--version` flag:
 
 ```sh
-nuclearkid -V
+nuke -V
 ```
 
 ### Activate Environment
 
-To activate the **NuclearKid** environment, simply use the `activate` command:
+To activate the **NukeBox** environment, simply use the `activate` command:
 
 ```sh
-nuclearkid activate
+nuke activate
 ```
 
 ### Deactivate Environment
 
-To deactivate the **NuclearKid** environment, use the `deactivate` command:
+To deactivate the **NukeBox** environment, use the `deactivate` command:
 
 ```sh
-nuclearkid deactivate
+nuke deactivate
 ```
 
 ### Update Components
 
 You can update specific components individually or update all components at once. Here are the available update commands:
 
-- Update NuclearKid (Core):
+- Update NukeBox (Core):
 
 ```sh
-nuclearkid update core
+nuke update core
 ```
 
 - Update Geant4 to the latest version:
 
 ```sh
-nuclearkid update geant4
+nuke update geant4
 ```
 
 - Update DAGMC to the latest version:
 
 ```sh
-nuclearkid update dagmc
+nuke update dagmc
 ```
 
 - Update OpenMC to the latest version:
 
 ```sh
-nuclearkid update openmc
+nuke update openmc
 ```
 
 - Update PyNE to the latest version:
 
 ```sh
-nuclearkid update pyne
+nuke update pyne
 ```
 
-- Update all components (NuclearKid, Geant4, DAGMC, OpenMC, and PyNE):
+- Update all components (NukeBox, Geant4, DAGMC, OpenMC, and PyNE):
 
 ```sh
-nuclearkid update all
+nuke update all
 ```
 
 ### Set Cross-Section Data Library
@@ -91,69 +91,69 @@ You can set the path for the cross-section data library using the `endf` command
 - ENDF/B-VII.0 (70):
 
 ```sh
-nuclearkid endf endfb70
+nuke endf endfb70
 ```
 
 - ENDF/B-VII.1 (71):
 
 ```sh
-nuclearkid endf endfb71
+nuke endf endfb71
 ```
 
 - ENDF/B-VIII.0/X (80X):
 
 ```sh
-nuclearkid endf lib80x
+nuke endf lib80x
 ```
 
-### Uninstall NuclearKid
+### Uninstall NukeBox
 
-To completely uninstall **NuclearKid**, use the `uninstall` command:
+To completely uninstall **NukeBox**, use the `uninstall` command:
 
 ```sh
-nuclearkid uninstall
+nuke uninstall
 ```
 
 ## General Usage
 
-The general usage format for **NuclearKid** is as follows:
+The general usage format for **NukeBox** is as follows:
 
 ```sh
-nuclearkid <command> [options]
+nuke <command> [options]
 ```
 
 ## Examples
 
-Here are some examples of how to use the **NuclearKid** commands:
+Here are some examples of how to use the **NukeBox** commands:
 
-- Activate the NuclearKid environment:
+- Activate the NukeBox environment:
 
 ```sh
-nuclearkid activate
+nuke activate
 ```
 
 - Update Geant4 to the latest version:
 
 ```sh
-nuclearkid update geant4
+nuke update geant4
 ```
 
 - Update all components:
 
 ```sh
-nuclearkid update all
+nuke update all
 ```
 
 - Set the cross-section data library to ENDF/B-VII.0 (70):
 
 ```sh
-nuclearkid endf endfb70
+nuke endf endfb70
 ```
 
-- Uninstall NuclearKid:
+- Uninstall NukeBox:
 
 ```sh
-nuclearkid uninstall
+nuke uninstall
 ```
 
-Feel free to use these commands to manage and update your nuclear physics components efficiently with the **NuclearKid** package manager!
+Feel free to use these commands to manage and update your nuclear physics components efficiently with the **NukeBox** package manager!

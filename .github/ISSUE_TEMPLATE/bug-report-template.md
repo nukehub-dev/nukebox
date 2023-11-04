@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug or issue to enhance the quality of NuclearKid
+about: Report a bug or issue to enhance the quality of NukeBox
 title: "[BUG] Concise description of the bug"
 labels: bug
 assignees: ""
@@ -33,7 +33,7 @@ If applicable, attach relevant screenshots, error logs, or code snippets to prov
 **Environment Information:**
 
 - Operating System: [e.g. Ubuntu 22.04]
-- NuclearKid Version: [e.g. 0.1.0]
+- NukeBox Version: [e.g. 0.1.0]
 - Python Version: [e.g. 3.11.4]
 - Relevant Package Versions: [e.g. PyNE 0.7.1]
 - Additional relevant details

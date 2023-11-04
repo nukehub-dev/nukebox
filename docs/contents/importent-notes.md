@@ -28,7 +28,7 @@ This script is created to assist users in configuring their Linux-based systems.
    Open a terminal and navigate to the directory where the script is located. Use the `chmod` command to make the script executable:
 
    ```shell
-   chmod +x install-nuclearkid.sh
+   chmod +x install-nukebox.sh
    ```
 
 4. **Run the Script**
@@ -36,7 +36,7 @@ This script is created to assist users in configuring their Linux-based systems.
    Execute the script using the following command:
 
    ```shell
-   sudo ./install-nuclearkid.sh
+   sudo ./install-nukebox.sh
    ```
 
 5. **Follow On-Screen Prompts**
@@ -55,7 +55,7 @@ This script is created to assist users in configuring their Linux-based systems.
     There is a test script available in the `tests` directory. You may need to install Pytest to test the script.
     
     ```sh
-    nuclearkid activate
+    nuke activate
     pip3 install pytest
     pytest -ra tests
     ```

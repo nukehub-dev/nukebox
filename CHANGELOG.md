@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.3] - 06/09/2023
+
+### Changed
+- Move ownership to `nukehub-dev`.
 
 ## [v0.1.2] - 06/09/2023
 

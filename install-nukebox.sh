@@ -127,10 +127,10 @@ set_install_directory() {
 
 set_env_name() {
   if [ -z "$env_name" ]; then
-    read -p "Enter environment name (or press enter for default 'nuclearkid'): " env_name
+    read -p "Enter environment name (or press enter for default 'nuke'): " env_name
 
     if [ -z "$env_name" ]; then
-      env_name="nuclearkid"
+      env_name="nuke"
       echo "Using default environment name: $env_name"
     else
       echo "Using custom environment name: $env_name"
@@ -223,13 +223,13 @@ setup_python_env() {
     core_old_version=$(cat ${env_dir}/var/log/Version.id)
     core_new_version=$Version
     while true; do
-      read -p "Update NuclearKid from $core_old_version to $core_new_version? (y/n): " -n 1 -r
+      read -p "Update NukeBox from $core_old_version to $core_new_version? (y/n): " -n 1 -r
       echo
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         source $env_dir/bin/activate
         break
       elif [[ $REPLY =~ ^[Nn]$ ]]; then
-        read -p "Do you want to delete the previous NuclearKid and create a new one? (y/n): " -n 1 -r
+        read -p "Do you want to delete the previous NukeBox and create a new one? (y/n): " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           rm -rf "${env_dir}"
@@ -265,7 +265,7 @@ install_moab() {
   mkdir -p .tmp
   cd .tmp
   # clone and version
-  git clone --branch release/v5.4.1 --single-branch https://bitbucket.org/fathomteam/moab moab-repo
+  git clone --b 5.5.0 https://bitbucket.org/fathomteam/moab moab-repo
   cd moab-repo
   mkdir -p build
   cd build
@@ -381,7 +381,7 @@ install_dagmc() {
   mkdir -p .tmp
   cd .tmp
   # clone the repository
-  git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
+  git clone -b fix-geant4-build https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
   cd dagmc-repo
   # Get the latest commit hash of the develop branch
   dagmc_version=$(git rev-parse origin/develop)
@@ -781,7 +781,7 @@ __${env_name}_update_dagmc() {
   echo "Updating DAGMC..."
   echo "-------------------"
   # Get the latest commit hash of the develop branch
-  dagmc_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git refs/heads/develop | awk '{print \$1}')
+  dagmc_new_version=\$(git ls-remote https://github.com/svalinn/DAGMC.git refs/heads/develop | awk '{print \$1}')
   # Read the previously stored commit hash from the file
   dagmc_old_version=\$(cat ${env_dir}/var/log/DAGMC.version.txt)
   # Compare the new and old commit hashes
@@ -802,7 +802,7 @@ __${env_name}_update_dagmc() {
         # Remove the existing DAGMC repository if it exists
         rm -rf dagmc-repo
         # Clone the latest version of the DAGMC repository
-        git clone https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
+        git clone https://github.com/nukehub-dev/DAGMC.git dagmc-repo
         cd dagmc-repo
         git checkout develop
         # Perform the update steps
@@ -890,40 +890,40 @@ __${env_name}_update_pyne() {
 
 __${env_name}_update_core(){
   echo "----------------------"
-  echo "Updating NuclearKid..."
+  echo "Updating NukeBox..."
   echo "----------------------"
   # Get the latest commit hash of the develop branch
-  core_new_version=\$(git ls-remote https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git develop | awk '{print \$1}')
+  core_new_version=\$(git ls-remote https://github.com/nukehub-dev/NukeBox.git develop | awk '{print \$1}')
   # Read the previously stored commit hash from the file
   core_old_version=\$(cat ${env_dir}/var/log/Version.id)
   # Compare the new and old commit hashes
   if [[ "\$core_new_version" == "\$core_old_version" ]]; then
-    echo "NuclearKid is already up to date."
+    echo "NukeBox is already up to date."
   else
     while true; do
-      echo "Update NuclearKid from \$core_old_version to \$core_new_version? (y/n): "
+      echo "Update NukeBox from \$core_old_version to \$core_new_version? (y/n): "
       read -r REPLY
       if [[ \$REPLY =~ ^[Yy]\$ ]]; then
         # Get the current working directory
         current_working_dir=\$(pwd)
-        # Navigate to the existing NuclearKid installation directory
+        # Navigate to the existing NukeBox installation directory
         cd ${env_dir}
         # Make a new temporary directory
         mkdir -p .tmp
         cd .tmp
-        # Remove the existing NuclearKid repository if it exists
-        rm -rf NuclearKid
-        # Clone the latest version of the NuclearKid repository
-        git clone https://github.com/ahnaf-tahmid-chowdhury/NuclearKid.git NuclearKid
-        cd NuclearKid
+        # Remove the existing NukeBox repository if it exists
+        rm -rf NukeBox
+        # Clone the latest version of the NukeBox repository
+        git clone https://github.com/nukehub-dev/NukeBox.git NukeBox
+        cd NukeBox
         # Run Setup
-        ./install-nuclearkid.sh -d ${install_dir} -e ${env_name}
+        ./install-nukebox.sh -d ${install_dir} -e ${env_name}
         # Remove the temporary directory
         rm -rf ${env_dir}/.tmp
         cd \$current_working_dir
         break
       elif [[ \$REPLY =~ ^[Nn]\$ ]]; then
-        echo "NuclearKid update cancelled."
+        echo "NukeBox update cancelled."
         break
       else
         echo "Error: Invalid input."
@@ -960,7 +960,7 @@ __${env_name}_uninstall(){
         echo "Removing ${env_name} from your shell."
         local config_file="\$1"
         if [ -f "\$config_file" ]; then
-          sed -i '/#<<< NuclearKid >>>#/,/#>>> NuclearKid <<<#/d' "\$config_file"
+          sed -i '/#<<< NukeBox >>>#/,/#>>> NukeBox <<<#/d' "\$config_file"
           echo "Removed ${env_name} from \$config_file."
         fi
       }
@@ -977,7 +977,7 @@ __${env_name}_uninstall(){
 }
 
 __${env_name}_help() {
-  echo "NuclearKid: Package Manager for Nuclear Engineering Development
+  echo "NukeBox: Package Manager for Nuclear Engineering Development
 
 
 Commands:
@@ -986,12 +986,12 @@ Commands:
 
   -V, --version      Display version
 
-  activate           Activate the NuclearKid environment
+  activate           Activate the NukeBox environment
 
-  deactivate         Deactivate the NuclearKid environment
+  deactivate         Deactivate the NukeBox environment
 
   update <module>    Update component
-                      - core:     Update NuclearKid
+                      - core:     Update NukeBox
                       - geant4:   Update Geant4 to the latest version
                       - openmc:   Update OpenMC to the latest version
                       - dagmc:    Update DAGMC to the latest version
@@ -1003,7 +1003,7 @@ Commands:
                       - endfb71: ENDF/B-VII.1 (71)
                       - lib80x:  ENDF/B-VIII.0/X (80X)
   
-  uninstall          Uninstall NuclearKid
+  uninstall          Uninstall NukeBox
 
 
 Usage:
@@ -1012,12 +1012,12 @@ Usage:
 
 
 Note:
-  - Use 'activate' to activate the NuclearKid environment.
-  - Use 'deactivate' to deactivate the NuclearKid environment.
+  - Use 'activate' to activate the NukeBox environment.
+  - Use 'deactivate' to deactivate the NukeBox environment.
   - Use 'update' with specific components to update them individually.
   - Use 'update all' to update all components.
   - Use 'endf <library>' to set the cross-section data library path.
-  - Use 'uninstall' to completely uninstall NuclearKid.
+  - Use 'uninstall' to completely uninstall NukeBox.
 
 
 Examples:
@@ -1028,11 +1028,11 @@ Examples:
   ${env_name} uninstall
   
   
-Project Home: https://github.com/ahnaf-tahmid-chowdhury/NuclearKid"
+Project Home: https://github.com/nukehub-dev/NukeBox"
 }
 
 __${env_name}_version(){
-  echo "NuclearKid version ${Version}"
+  echo "NukeBox version ${Version}"
 }
 
 ${env_name}() {
@@ -1066,14 +1066,14 @@ add_to_shell() {
       backup_file="$backup_dir/$(basename $config_file)_$(date +%Y%m%d%H%M%S)"
       cp "$config_file" "$backup_file"
       # Append to the config file if not already present
-      if ! grep -q "#<<< NuclearKid >>>#" "$config_file" && ! grep -q "#>>> NuclearKid <<<#" "$config_file"; then
+      if ! grep -q "#<<< NukeBox >>>#" "$config_file" && ! grep -q "#>>> NukeBox <<<#" "$config_file"; then
         echo "Adding to $config_file"
         cat >>"$config_file" <<EOF
-#<<< NuclearKid >>>#
+#<<< NukeBox >>>#
 if [ -f "${env_dir}/${env_name}" ]; then
   source ${env_dir}/${env_name}
 fi
-#>>> NuclearKid <<<#
+#>>> NukeBox <<<#
 
 EOF
       fi
@@ -1092,7 +1092,7 @@ main() {
   detect_os
   detect_version_id
   echo
-  echo -e "\033[1mWelcome to the NuclearKid installer!\033[0m"
+  echo -e "\033[1mWelcome to the NukeBox installer!\033[0m"
   echo "This package manager sets up a development 
 environment for nuclear physics simulations and calculations. 
 It automates the installation of various packages 
@@ -1118,8 +1118,8 @@ for running nuclear physics simulations and analyses."
   create_program_file
   add_to_shell
   echo "==============================================="
-  echo "NuclearKid installation finished"
-  echo "To activate NuclearKid in your terminal type:"
+  echo "NukeBox installation finished"
+  echo "To activate NukeBox in your terminal type:"
   echo "${env_name} activate"
   echo "Recommended packages can be installed through:"
   echo "pip3 install -r packages.txt --default-timeout=0"

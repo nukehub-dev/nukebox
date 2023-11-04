@@ -1,6 +1,6 @@
 ---
 name: Pull Request
-about: Submit changes to NuclearKid for review and inclusion
+about: Submit changes to NukeBox for review and inclusion
 title: "[PR] Concise description of your changes"
 labels: enhancement
 assignees: ""
