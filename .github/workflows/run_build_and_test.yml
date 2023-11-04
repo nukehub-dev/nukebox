@@ -38,7 +38,7 @@ jobs:
       - name: Install NukeBox
         run: |
           ./install-nukebox.sh -d ${GITHUB_WORKSPACE} \
-            -e nukebox \
+            -e nuke \
             -g ${GITHUB_WORKSPACE}/nuke/G4Data \
             -c ${GITHUB_WORKSPACE}/nuke/CrossSectionData
 
