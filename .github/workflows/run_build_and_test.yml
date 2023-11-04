@@ -45,6 +45,6 @@ jobs:
       - name: Run tests
         run: |
           source ${GITHUB_WORKSPACE}/nuke/nuke
-          nuclearkid activate
+          nuke activate
           python -m pip install pytest
           python -m pytest -ra tests

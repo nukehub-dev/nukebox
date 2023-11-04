@@ -1,4 +1,4 @@
-# <img src=".github/logo/nuclearkid.svg" alt="" style="height: 64px">NukeBox</h1>
+# <img src=".github/logo/nukebox.svg" alt="" style="height: 64px">NukeBox</h1>
 
 ![Build and Test](https://img.shields.io/github/actions/workflow/status/nukehub-dev/NukeBox/run_build_and_test.yml?style=flat-square&logo=githubactions&logoColor=white&label=Build%20and%20Test
 )
@@ -36,16 +36,16 @@ This package manager is designed to set up a development environment for nuclear
    cd NukeBox*
    ```
 
-3. Make the `install-nuclearkid.sh` script executable.
+3. Make the `install-nukebox.sh` script executable.
 
    ```sh
-   chmod +x install-nuclearkid.sh
+   chmod +x install-nukebox.sh
    ```
 
 4. Run the script.
 
    ```sh
-   ./install-nuclearkid.sh
+   ./install-nukebox.sh
    ```
 
 The script will guide you through the installation process and prompt you for necessary configuration options.
@@ -56,7 +56,7 @@ During the installation process, you'll be asked for the following configuration
 
 1. **Installation Directory Path**: Set the path where all the software will be installed. You can use the current directory or specify a custom directory.
 
-2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuclearkid`, but you can provide a custom name.
+2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuke`, but you can provide a custom name.
 
 3. **Geant4 Data Library Path**: If you choose to install Geant4 data, provide the path for the Geant4 data library. The default is a directory within the virtual environment.
 
@@ -71,7 +71,7 @@ During the installation process, you'll be asked for the following configuration
 You can also provide the configuration options directly from the command line.
 
 ```sh
-./install-nuclearkid.sh -d <installation-directory> \
+./install-nukebox.sh -d <installation-directory> \
    -e <environment-name> \
    -g <geant4-data-library-path> \
    -c <cross-section-library-path>
@@ -137,7 +137,7 @@ You can also provide the configuration options directly from the command line.
 
 ## Activation and Usage
 
-Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuclearkid`). 
+Once the installation is complete, the script will create a program file named after the specified environment name (e.g., `nuke`). 
 
 **Commands:**
 - `-h` or `--help`: Display help

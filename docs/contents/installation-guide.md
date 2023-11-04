@@ -57,7 +57,7 @@ During the installation process, you'll be prompted for various configuration op
 
 1. **Installation Directory Path**: Set the path where all the software will be installed. You can use the current directory or specify a custom directory.
 
-2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuclearkid`, but you can provide a custom name.
+2. **Environment Name**: Enter a name for the virtual environment that will be created. The default name is `nuke`, but you can provide a custom name.
 
 3. **Geant4 Data Library Path**: If you choose to install Geant4 data, provide the path for the Geant4 data library. The default is a directory within the virtual environment.
 
