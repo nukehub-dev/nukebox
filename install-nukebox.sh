@@ -265,7 +265,7 @@ install_moab() {
   mkdir -p .tmp
   cd .tmp
   # clone and version
-  git clone -b 5.5.0 https://bitbucket.org/fathomteam/moab moab-repo
+  git clone -b 5.5.1 https://bitbucket.org/fathomteam/moab moab-repo
   cd moab-repo
   mkdir -p build
   cd build
@@ -381,7 +381,7 @@ install_dagmc() {
   mkdir -p .tmp
   cd .tmp
   # clone the repository
-  git clone -b fix-geant4-build https://github.com/ahnaf-tahmid-chowdhury/DAGMC.git dagmc-repo
+  git clone https://github.com/svalinn/DAGMC.git dagmc-repo
   cd dagmc-repo
   # Get the latest commit hash of the develop branch
   dagmc_version=$(git rev-parse origin/develop)
@@ -802,7 +802,7 @@ __${env_name}_update_dagmc() {
         # Remove the existing DAGMC repository if it exists
         rm -rf dagmc-repo
         # Clone the latest version of the DAGMC repository
-        git clone https://github.com/nukehub-dev/DAGMC.git dagmc-repo
+        git clone https://github.com/svalinn/DAGMC.git dagmc-repo
         cd dagmc-repo
         git checkout develop
         # Perform the update steps
